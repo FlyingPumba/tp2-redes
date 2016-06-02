@@ -14,10 +14,10 @@ def calcularDesvio(data, media):
 
 #Toma un arreglo de valores y avisa si quita un outlier, no dice nada en caso contrario
 def quitarOutliers(datos):
-    cantDatos = len(datos)
     hayOutliers = True
     #Cicla hasta que no queden outlier por sacar.
     while hayOutliers:
+        cantDatos = len(datos)
         min_ = min(datos)
         max_ = max(datos)
 
@@ -45,8 +45,8 @@ def quitarOutliers(datos):
                 for i in range(0,cantDatos):
                     if datos[i] == max_:
                         datos.pop(i)
-                        i-=1
-                        print ("Se quito un outlier")
+                        # print ("Se quito un outlier")
+                        break
             else:
                 hayOutliers = False
         else:
@@ -55,8 +55,8 @@ def quitarOutliers(datos):
                 for i in range(0,cantDatos):
                     if datos[i] == min_:
                         datos.pop(i)
-                        i-=1
-                        print ("Se quito un outlier")
+                        # print ("Se quito un outlier")
+                        break
             else:
                 hayOutliers = False
 

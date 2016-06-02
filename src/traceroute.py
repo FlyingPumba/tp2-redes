@@ -2,6 +2,7 @@
 from scapy.all import *
 import operator
 from scipy import stats
+from outliers import *
 
 TIMEOUT = 1
 VERBOSE = False
@@ -39,9 +40,9 @@ def obtener_ruta(hostname):
                 break
     return ruta, tiempos
 
-def calcular_ruta_comun(rutas):
+def calcular_ruta_comun(rutas_y_tiempos):
     ruta_comun = []
-    rutas_a_procesar = rutas
+    rutas_a_procesar = rutas_y_tiempos
     for i in range(0, 29):
         hops_en_posicion_i = {}
         # Cuento cuantas veces aparece cada ip en el hop numero i
@@ -67,17 +68,34 @@ def calcular_ruta_comun(rutas):
             if ruta[i] == ip_con_mas_apariciones:
                 nuevas_rutas.append((ruta, tiempos))
         rutas_a_procesar = nuevas_rutas
-    print ruta_comun
 
+    return ruta_comun, [tiempos for (ruta, tiempos) in rutas_a_procesar]
 
 if __name__ == "__main__":
     hostname = "google.com"
-    rutas = []
+    rutas_y_tiempos = []
     intentos = 10
     for j in range(1,intentos):
         print "Realizando traceroute %d" % j
         ruta, tiempos = obtener_ruta(hostname)
-        rutas.append((ruta, tiempos))
+        rutas_y_tiempos.append((ruta, tiempos))
 
-    calcular_ruta_comun(rutas)
-    print rutas
+    ruta_comun, tiempos = calcular_ruta_comun(rutas_y_tiempos)
+    print "Ruta establecida: %s" % ruta_comun
+    print ""
+    print tiempos
+    print ""
+    # Para cada hop, saco los outliers de los tiempos
+    tiempos_sin_outliers = []
+    for hop in xrange(len(tiempos[0])):
+        if ruta_comun[hop] == "*":
+            tiempos_sin_outliers.append(-1)
+            continue
+        # Guardo en una lista todos los tiempos de un hop
+        tiempos_hop = []
+        for tiempo in tiempos:
+            tiempos_hop.append(tiempo[hop])
+        quitarOutliers(tiempos_hop)
+        tiempos_sin_outliers.append(calcularMedia(tiempos_hop))
+
+    print "Tiempos sin outliers y promediados: %s" % tiempos_sin_outliers
