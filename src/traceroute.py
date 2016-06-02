@@ -128,3 +128,12 @@ if __name__ == "__main__":
         last_time = new_time
 
     print "\nPosible salto continental entre las IPs: %s - %s" % (ip_src_salto, ip_dst_salto)
+
+    print "\nGeolocalizacion de las IPs:"
+    for ip in ruta_comun:
+        print ""
+        if ip != "*":
+            print "IP: %s" % ip
+            os.system("geoiplookup %s" % ip)
+        else:
+            print "IP: *"
