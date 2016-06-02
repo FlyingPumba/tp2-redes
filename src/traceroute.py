@@ -1,4 +1,7 @@
 #! /usr/bin/env python
+import sys
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 import operator
 from scipy import stats
@@ -72,19 +75,25 @@ def calcular_ruta_comun(rutas_y_tiempos):
     return ruta_comun, [tiempos for (ruta, tiempos) in rutas_a_procesar]
 
 if __name__ == "__main__":
-    hostname = "google.com"
+    if len(sys.argv) < 2:
+        print ''
+        print "Usage: " + sys.argv[0] + " <IP>"
+        exit(1)
+
+    ip = sys.argv[1]
+
     rutas_y_tiempos = []
     intentos = 10
     for j in range(1,intentos):
-        print "Realizando traceroute %d" % j
-        ruta, tiempos = obtener_ruta(hostname)
+        print "Realizando traceroute %d a IP %s" % (j, ip)
+        ruta, tiempos = obtener_ruta(ip)
         rutas_y_tiempos.append((ruta, tiempos))
 
+    print ""
+
     ruta_comun, tiempos = calcular_ruta_comun(rutas_y_tiempos)
-    print "Ruta establecida: %s" % ruta_comun
-    # print ""
-    # print tiempos
-    # print ""
+    print "\tRuta establecida: %s\n" % ruta_comun
+    print "\tTiempos obtenidos para la ruta:\n%s" % tiempos
     # Para cada hop, saco los outliers de los tiempos
     tiempos_sin_outliers = []
     for hop in xrange(len(tiempos[0])):
@@ -98,7 +107,8 @@ if __name__ == "__main__":
         quitarOutliers(tiempos_hop)
         tiempos_sin_outliers.append(calcularMedia(tiempos_hop))
 
-    print "Tiempos sin outliers y promediados: %s" % tiempos_sin_outliers
+    print ""
+    print "\tTiempos sin outliers y promediados: %s\n" % tiempos_sin_outliers
 
     # Busco maximo delta en tiempos para ver posible candidato a salto continental
     max_delta = -1
@@ -109,10 +119,12 @@ if __name__ == "__main__":
         new_time = tiempos_sin_outliers[i]
         if new_time != -1 and last_time != -1:
             delta = new_time - last_time
+            if delta < 0:
+                print "\tWarning: salto negativo entre los hops %d y %d" % (i-1, i)
             if delta > max_delta:
                 max_delta = delta
                 ip_src_salto = ruta_comun[i-1]
                 ip_dst_salto = ruta_comun[i]
         last_time = new_time
 
-    print "Posible salto continental entre las IPs: %s - %s" % (ip_src_salto, ip_dst_salto)
+    print "\nPosible salto continental entre las IPs: %s - %s" % (ip_src_salto, ip_dst_salto)
