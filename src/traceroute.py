@@ -82,9 +82,9 @@ if __name__ == "__main__":
 
     ruta_comun, tiempos = calcular_ruta_comun(rutas_y_tiempos)
     print "Ruta establecida: %s" % ruta_comun
-    print ""
-    print tiempos
-    print ""
+    # print ""
+    # print tiempos
+    # print ""
     # Para cada hop, saco los outliers de los tiempos
     tiempos_sin_outliers = []
     for hop in xrange(len(tiempos[0])):
@@ -99,3 +99,20 @@ if __name__ == "__main__":
         tiempos_sin_outliers.append(calcularMedia(tiempos_hop))
 
     print "Tiempos sin outliers y promediados: %s" % tiempos_sin_outliers
+
+    # Busco maximo delta en tiempos para ver posible candidato a salto continental
+    max_delta = -1
+    last_time = tiempos_sin_outliers[0]
+    ip_src_salto = ""
+    ip_dst_salto = ""
+    for i in range(1, len(tiempos_sin_outliers)):
+        new_time = tiempos_sin_outliers[i]
+        if new_time != -1 and last_time != -1:
+            delta = new_time - last_time
+            if delta > max_delta:
+                max_delta = delta
+                ip_src_salto = ruta_comun[i-1]
+                ip_dst_salto = ruta_comun[i]
+        last_time = new_time
+
+    print "Posible salto continental entre las IPs: %s - %s" % (ip_src_salto, ip_dst_salto)
