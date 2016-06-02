@@ -15,44 +15,50 @@ def calcularDesvio(data, media):
 #Toma un arreglo de valores y avisa si quita un outlier, no dice nada en caso contrario
 def quitarOutliers(datos):
     cantDatos = len(datos)
+    hayOutliers = True
+    #Cicla hasta que no queden outlier por sacar.
+    while hayOutliers:
+        min_ = min(datos)
+        max_ = max(datos)
 
-    min_ = min(datos)
-    max_ = max(datos)
+        media = calcularMedia(datos)
+        desvio = calcularDesvio(datos, media)
 
-    media = calcularMedia(datos)
-    desvio = calcularDesvio(datos, media)
+        valorAbsolutoMin = abs(min_ - media)
+        valorAbsolutoMax = abs(max_ - media)
 
-    valorAbsolutoMin = abs(min_ - media)
-    valorAbsolutoMax = abs(max_ - media)
+        t_a2 = stats.t.ppf(1-(0.05/2.),cantDatos-2)
+        tau = (t_a2*(cantDatos-1))/(math.sqrt(cantDatos)*math.sqrt(cantDatos-2+t_a2**2))
+        tS = tau*desvio
 
-    t_a2 = stats.t.ppf(1-(0.05/2.),cantDatos-2)
-    tau = (t_a2*(cantDatos-1))/(math.sqrt(cantDatos)*math.sqrt(cantDatos-2+t_a2**2))
-    tS = tau*desvio
+        #print (media)
+        #print (desvio)
+        #print (valorAbsolutoMin)
+        #print (valorAbsolutoMax)
+        #print (t_a2)
+        #print (tau)
+        #print (tS)
 
-    #print (media)
-    #print (desvio)
-    #print (valorAbsolutoMin)
-    #print (valorAbsolutoMax)
-    #print (t_a2)
-    #print (tau)
-    #print (tS)
-
-    if valorAbsolutoMax > valorAbsolutoMin:
-        if valorAbsolutoMax > tS:
-            #Este es el caso en el que tengo que quitar el elemento
-            for i in range(0,cantDatos):
-                if datos[i] == max_:
-                    datos.pop(i)
-                    i-=1
-                    print ("Se quito un outlier")
-    else:
-        if valorAbsolutoMin > tS:
-            #Este es el caso en el que tengo que quitar el elemento
-            for i in range(0,cantDatos):
-                if datos[i] == min_:
-                    datos.pop(i)
-                    i-=1
-                    print ("Se quito un outlier")
+        if valorAbsolutoMax > valorAbsolutoMin:
+            if valorAbsolutoMax > tS:
+                #Este es el caso en el que tengo que quitar el elemento
+                for i in range(0,cantDatos):
+                    if datos[i] == max_:
+                        datos.pop(i)
+                        i-=1
+                        print ("Se quito un outlier")
+            else:
+                hayOutliers = False
+        else:
+            if valorAbsolutoMin > tS:
+                #Este es el caso en el que tengo que quitar el elemento
+                for i in range(0,cantDatos):
+                    if datos[i] == min_:
+                        datos.pop(i)
+                        i-=1
+                        print ("Se quito un outlier")
+            else:
+                hayOutliers = False
 
 
 if __name__ == "__main__":
