@@ -1,0 +1,59 @@
+%Tiempos sin outliers y promediados: [1.616358757019043, 10.90069611867269, 10.141801834106445, 11.674344539642334, 9.963909784952799, 136.57302856445312, -1, -1, 242.77901649475098, 237.20855712890625, 239.07832304636636, 241.48444334665933, 237.82098293304443, 246.90798918406168, -1, -1, 239.13252353668213, 241.62713686625162]
+%Warning: salto negativo entre los hops 1 y 2
+%Warning: salto negativo entre los hops 3 y 4
+%Warning: salto negativo entre los hops 8 y 9
+%Warning: salto negativo entre los hops 11 y 12
+
+%Posible salto continental entre las IPs: 208.178.195.213 - 67.17.99.233
+
+%Geolocalizacion de las IPs:
+
+%IP: 192.168.0.1
+%GeoIP Country Edition: IP Address not found
+
+%IP: 10.27.128.1
+%GeoIP Country Edition: IP Address not found
+
+%IP: 10.242.1.61
+%GeoIP Country Edition: IP Address not found
+
+%IP: 208.178.195.214
+%GeoIP Country Edition: US, United States
+
+%IP: 208.178.195.213
+%GeoIP Country Edition: US, United States
+
+%IP: 67.17.99.233
+%GeoIP Country Edition: US, United States
+
+%IP: *
+
+%IP: *
+
+%IP: 212.187.139.166
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: 146.97.33.2
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: 146.97.37.194
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: 193.63.108.94
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: 193.63.108.98
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: 193.63.109.90
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: *
+
+%IP: *
+
+%IP: 192.76.32.62
+%GeoIP Country Edition: GB, United Kingdom
+
+%IP: 129.67.242.154
+%GeoIP Country Edition: GB, United Kingdom
