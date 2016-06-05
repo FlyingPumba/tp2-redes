@@ -86,10 +86,18 @@ RTT muy similar a 4.
 
 
 Por otro lado tenemos los que no tuvieron respuesta. Esta es la anomalía es conocida como Missing Hops.
-Se produce en general cuando un router está protegido por un firewall o de otro modo configurado para no
-generar errores excesivos ICMP TTL.
+Se produce en general cuando un router está protegido por un firewall o de configurado otro modo para no
+generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
 
+El hops 6 pertenece a Kansas, Estados Unidos pero el 9 pertenece a Reino Unido. Pensamos que a la hora de
+establecer el enlace continental se lo hizo primero con dos routers que estaban protegidos por firewall o
+configurados de otro modo. La tercera vez que intenta establecer el enlace a Reino Unido el hops le da
+respuesta, en este caso el 9. Probando con la universidad de Cambrige, también ubicada en Reino Unido, se
+obtiene que también se pierden hops entre una IP de Estados Unidos y la de Reino Unido. Como hipótesis
+alternativa podriamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
 
+En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Londres mientras que 17 pertenece a
+Oxford. 
 
 Por último tenemos la geolocalización de los hops que forman la traza. Los mostraremos en el orden que
 aparecieron.
