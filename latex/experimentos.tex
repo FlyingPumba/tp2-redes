@@ -17,6 +17,36 @@ Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
 Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
 
+
+\begin{table}[ht]\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
+    \texttt{1} & 192.168.0.1      &     & -       & Prov. Buenos Aires, Argentina   \\ \hline
+    \texttt{2} & 10.27.128.1                & -       & -       & - IP privada  \\ \hline
+    \texttt{3} & 10.242.1.61                & -       & -       & - IP privada  \\ \hline
+    \texttt{4} & 208.178.195.214                & -       & -       & -   \\ \hline
+    \texttt{5} & 208.178.195.213                & -       & -       & -   \\ \hline
+    \texttt{6} & 67.17.99.233     & 14.06   & -       & Ciudad Buenos Aires, Argentina    \\ \hline
+    \texttt{7} & *   & 14.71    & 4.62   & Ciudad Buenos Aires,Argentina   \\ \hline
+    \texttt{8} & *    & 16.23    & 10.33  & Cordoba, Argentina   \\ \hline
+    \texttt{9} & 212.187.139.166     & 240.04  & 1378.99 & Texas, Estados Unidos   \\ \hline
+    \texttt{10} & 146.97.33.2               & -       & -       & -   \\ \hline
+    \texttt{11} & 146.97.37.194               & -       & -       & -    \\ \hline
+    \texttt{12} & 193.63.108.94     & 213.49  & -       & Nueva York, Estados Unidos   \\ \hline
+    \texttt{13} & 193.63.108.98   & 229.91  & 7.69    & Florida, Estados Unidos   \\ \hline
+    \texttt{14} & 193.63.109.90   & 271.08  & 17.91   & Texas, Estados Unidos   \\ \hline
+    \texttt{15} & *    & 269.29  & -0.66   & California, Estados Unidos   \\ \hline
+    \texttt{16} & *   & 273.33  & 1.50    & California, Estados Unidos    \\ \hline
+    \texttt{17} & 192.76.32.62   & 269.75  & -1.31   & California, Estados Unidos   \\ \hline
+    \texttt{18} & 129.67.242.154 & 371.34  & 37.66   & Canberra, Australia   \\ \hline
+    \end{tabular}
+    \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
+\end{center}\end{table}
+
+
+
+
 \begin{tikzpicture}
 \begin{axis}[
     ybar,
@@ -87,7 +117,7 @@ RTT muy similar a 4.
 
 
 
-Por otro lado tenemos los que no tuvieron respuesta. Esta es la anomalía es conocida como Missing Hops.
+Por otro lado, tenemos los que no tuvieron respuesta. Esta anomalía es conocida como Missing Hops.
 Se produce en general cuando un router está protegido por un firewall o de configurado otro modo para no
 generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
 
