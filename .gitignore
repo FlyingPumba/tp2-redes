@@ -1,1 +1,6 @@
 *.pyc
+*.aux
+*.log
+*.toc
+*.out
+*.pdf

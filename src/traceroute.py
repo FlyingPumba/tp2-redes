@@ -83,7 +83,7 @@ if __name__ == "__main__":
     ip = sys.argv[1]
 
     rutas_y_tiempos = []
-    intentos = 10
+    intentos = 50
     for j in range(1,intentos):
         print "Realizando traceroute %d a IP %s" % (j, ip)
         ruta, tiempos = obtener_ruta(ip)
