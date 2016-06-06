@@ -7,9 +7,9 @@ universidades:
 \item Universidad de Ghana (Africa)
 \end{itemize}
 
-Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{XX}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
+Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
 
-Para identificar los saltos intercontinentales calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = \frac{RTT_{i} - RTT_{i-1}}{RTT_{i-1}}\), donde $2 \leq i \leq$ cantidad de hops. Siendo los candidatos a saltos intercontinentales los pares de hops con $\Delta RTT$ mayor al resto. A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ref a geolookip}).
+Para identificar los saltos intercontinentales calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = \frac{RTT_{i} - RTT_{i-1}}{RTT_{i-1}}\), donde $2 \leq i \leq$ cantidad de hops. Siendo los candidatos a saltos intercontinentales los pares de hops con $\Delta RTT$ mayor al resto. A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ref a geolookip o lo que sea}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
@@ -191,6 +191,12 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Ghana (ug.edu.gh  - IP 197.255.125.10)}
 \end{center}
 \end{table}
+
+A continuación analizamos la anomalias encontradas:
+
+% \begin{itemize}
+%   \
+% \end{itemize}
 
 \begin{figure}[h]
     \centering
