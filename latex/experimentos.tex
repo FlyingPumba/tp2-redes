@@ -7,15 +7,45 @@ universidades:
 \item Universidad de Ghana (Africa)
 \end{itemize}
 
-Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{XX}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
+Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
 
-Para identificar los saltos intercontinentales calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = \frac{RTT_{i} - RTT_{i-1}}{RTT_{i-1}}\), donde $2 \leq i \leq$ cantidad de hops. Siendo los candidatos a saltos intercontinentales los pares de hops con $\Delta RTT$ mayor al resto. A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ref a geolookip}).
+Para identificar los saltos intercontinentales calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Siendo los candidatos a saltos intercontinentales los pares de hops con $\Delta RTT$ mayor al resto. A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ref a geolookip o lo que sea}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
 \subsection{Universidad de Oxford}
 
 Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
+
+
+\begin{table}[ht]\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
+    \texttt{1} & 192.168.0.1      &     & -       & Prov. Buenos Aires, Argentina   \\ \hline
+    \texttt{2} & 10.27.128.1                & -       & -       & - IP privada  \\ \hline
+    \texttt{3} & 10.242.1.61                & -       & -       & - IP privada  \\ \hline
+    \texttt{4} & 208.178.195.214                & -       & -       & -   \\ \hline
+    \texttt{5} & 208.178.195.213                & -       & -       & -   \\ \hline
+    \texttt{6} & 67.17.99.233     & 14.06   & -       & Ciudad Buenos Aires, Argentina    \\ \hline
+    \texttt{7} & *   & 14.71    & 4.62   & Ciudad Buenos Aires,Argentina   \\ \hline
+    \texttt{8} & *    & 16.23    & 10.33  & Cordoba, Argentina   \\ \hline
+    \texttt{9} & 212.187.139.166     & 240.04  & 1378.99 & Texas, Estados Unidos   \\ \hline
+    \texttt{10} & 146.97.33.2               & -       & -       & -   \\ \hline
+    \texttt{11} & 146.97.37.194               & -       & -       & -    \\ \hline
+    \texttt{12} & 193.63.108.94     & 213.49  & -       & Nueva York, Estados Unidos   \\ \hline
+    \texttt{13} & 193.63.108.98   & 229.91  & 7.69    & Florida, Estados Unidos   \\ \hline
+    \texttt{14} & 193.63.109.90   & 271.08  & 17.91   & Texas, Estados Unidos   \\ \hline
+    \texttt{15} & *    & 269.29  & -0.66   & California, Estados Unidos   \\ \hline
+    \texttt{16} & *   & 273.33  & 1.50    & California, Estados Unidos    \\ \hline
+    \texttt{17} & 192.76.32.62   & 269.75  & -1.31   & California, Estados Unidos   \\ \hline
+    \texttt{18} & 129.67.242.154 & 371.34  & 37.66   & Canberra, Australia   \\ \hline
+    \end{tabular}
+    \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
+\end{center}\end{table}
+
+
+
 
 \begin{tikzpicture}
 \begin{axis}[
@@ -87,7 +117,7 @@ RTT muy similar a 4.
 
 
 
-Por otro lado tenemos los que no tuvieron respuesta. Esta es la anomalía es conocida como Missing Hops.
+Por otro lado, tenemos los que no tuvieron respuesta. Esta anomalía es conocida como Missing Hops.
 Se produce en general cuando un router está protegido por un firewall o de configurado otro modo para no
 generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
 
@@ -131,29 +161,29 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
-    \texttt{1} & 192.168.0.1      & 1.38    & -       & Prov. Buenos Aires, Argentina   \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \texttt{1} & 192.168.0.1      & 1.38    & -       & IP privada  \\ \hline
     \texttt{2} & *                & -       & -       & -   \\ \hline
     \texttt{3} & *                & -       & -       & -   \\ \hline
     \texttt{4} & *                & -       & -       & -   \\ \hline
     \texttt{5} & *                & -       & -       & -   \\ \hline
-    \texttt{6} & 200.89.165.9     & 14.06   & -       & Ciudad Buenos Aires, Argentina    \\ \hline
-    \texttt{7} & 200.89.165.250   & 14.71    & 4.62   & Ciudad Buenos Aires,Argentina   \\ \hline
-    \texttt{8} & 190.216.88.33    & 16.23    & 10.33  & Cordoba, Argentina   \\ \hline
-    \texttt{9} & 67.17.94.249     & 240.04  & 1378.99 & Texas, Estados Unidos   \\ \hline
+    \texttt{6} & 200.89.165.9     & 14.06   & -       & Argentina    \\ \hline
+    \texttt{7} & 200.89.165.250   & 14.71    & 0.65   & Argentina   \\ \hline
+    \texttt{8} & 190.216.88.33    & 16.23    & 10.33  & Ciudad de Buenos Aires, Argentina   \\ \hline
+    \texttt{9} & 67.17.94.249     & 240.04  & 223.81 & Estados Unidos   \\ \hline
     \texttt{10} & *               & -       & -       & -   \\ \hline
     \texttt{11} & *               & -       & -       & -    \\ \hline
-    \texttt{12} & 4.68.127.54     & 213.49  & -       & Nueva York, Estados Unidos   \\ \hline
-    \texttt{13} & 129.250.4.250   & 229.91  & 7.69    & Florida, Estados Unidos   \\ \hline
-    \texttt{14} & 129.250.2.219   & 271.08  & 17.91   & Texas, Estados Unidos   \\ \hline
-    \texttt{15} & 129.250.7.69    & 269.29  & -0.66   & California, Estados Unidos   \\ \hline
-    \texttt{16} & 129.250.3.123   & 273.33  & 1.50    & California, Estados Unidos    \\ \hline
-    \texttt{17} & 204.1.253.166   & 269.75  & -1.31   & California, Estados Unidos   \\ \hline
-    \texttt{18} & 202.158.194.172 & 371.34  & 37.66   & Canberra, Australia   \\ \hline
-    \texttt{19} & 113.197.15.68   & 377.51  & 1.66    & Canberra, Australia   \\ \hline
-    \texttt{20} & 113.197.15.66   & 377.32  & -0.05   & Canberra, Australia   \\ \hline
-    \texttt{21} & 113.197.15.152  & 418.35  & 10.87   & Canberra, Australia    \\ \hline
-    \texttt{22} & 138.44.5.47     & 371.39  & -11.23  & Banks, Australia   \\ \hline
+    \texttt{12} & 4.68.127.54     & 213.49  & -       & Estados Unidos   \\ \hline
+    \texttt{13} & 129.250.4.250   & 229.91  & 16.48    & Colorado, Estados Unidos   \\ \hline
+    \texttt{14} & 129.250.2.219   & 271.08  & 41.17   & Colorado, Estados Unidos   \\ \hline
+    \texttt{15} & 129.250.7.69    & 269.29  & -1.79   & Colorado, Estados Unidos   \\ \hline
+    \texttt{16} & 129.250.3.123   & 273.33  & 4.04    & Colorado, Estados Unidos    \\ \hline
+    \texttt{17} & 204.1.253.166   & 269.75  & -3.58   & Colorado, Estados Unidos   \\ \hline
+    \texttt{18} & 202.158.194.172 & 371.34  & 101.59   & Canberra, Australia   \\ \hline
+    \texttt{19} & 113.197.15.68   & 377.51  & 6.17    & Canberra, Australia   \\ \hline
+    \texttt{20} & 113.197.15.66   & 377.32  & -0.19   & Canberra, Australia   \\ \hline
+    \texttt{21} & 113.197.15.152  & 418.35  & 41.03   & Canberra, Australia    \\ \hline
+    \texttt{22} & 138.44.5.47     & 371.39  & -46.96  & Victoria, Australia   \\ \hline
     \texttt{23} & *               & -       & -       & -                \\ \hline
     \texttt{24} & *               & -       & -       & -   \\ \hline
     \texttt{25} & 129.78.5.8      & 446.28  & -       & Sydney, Australia   \\ \hline
@@ -161,6 +191,27 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                ybar,
+                xtick=data,
+                width=15cm,
+                ymin = 0,
+                ylabel={RTT},
+                xlabel={Hop number}
+            ]
+            \addplot table[x=hop,y=rtt]{data/sidney.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+A continuación analizamos los resultados del experimento utilizando las anomalias descriptas previamente:
+\begin{itemize}
+    \item \textit{Missing hops}: de los hops 2, 3, 4, 5, 10, 11, 23 y 24 no obtuvimos respuesta.  
+    \item \textit{False RTT}: en los hops 15, 17, 20, 22.
+\end{itemize}
 
 \subsection{Universidad de Ghana}
 
@@ -192,12 +243,20 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \end{center}
 \end{table}
 
+A continuación analizamos la anomalias encontradas:
+
+% \begin{itemize}
+%   \
+% \end{itemize}
+
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
                 ybar,
                 xtick=data,
+                width=15cm,
+                ymin = 0,
                 ylabel={RTT},
                 xlabel={Hop number}
             ]

@@ -139,6 +139,6 @@ if __name__ == "__main__":
             print ""
             if ip != "*":
                 print "IP: %s" % ip
-                os.system("geoiplookup %s" % ip)
+                os.system("curl ipinfo.io/%s" % ip)
             else:
                 print "IP: *"
