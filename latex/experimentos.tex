@@ -205,3 +205,48 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
         \end{axis}
     \end{tikzpicture}
 \end{figure}
+
+
+\subsection{Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)}
+
+Los resultados de este experimento pueden resumirse en el siguiente cuadro:
+
+\begin{table}[ht]\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion}             \\ \hline
+    \texttt{1}  & 10.27.64.1      & 14.23             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
+    \texttt{2}  & 10.242.1.149    & 11.58             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
+    \texttt{3}  & 195.22.220.33   & 13.38             & -                          & Italia                         \\ \hline
+    \texttt{4}  & 195.22.220.32   & 11.97             & -                          & Italia                         \\ \hline
+    \texttt{5}  & 195.22.206.92   & 172.40            & -                          & Italia                         \\ \hline
+    \texttt{6}  & 195.22.206.92   & 172.13            & -                          & Italia                         \\ \hline
+    \texttt{7}  & 216.6.87.202    & 164.11            & -                          & Delaware, Estados Unidos       \\ \hline
+    \texttt{8}  & 216.6.87.169    & 255.53            & -                          & Delaware, Estados Unidos       \\ \hline
+    \texttt{9}  & 216.6.57.1      & 253.17            & -                          & Delaware, Estados Unidos       \\ \hline
+    \texttt{10} & 66.198.70.174   & 230.14            & -                          & Delaware, Estados Unidos       \\ \hline
+    \texttt{11} & 80.231.76.121   & 253.52            & -                          & Reino Unido, Europa            \\ \hline
+    \texttt{12} & 195.219.195.238 & 325.31            & -                          & Reino Unido, Europa            \\ \hline
+    \texttt{13} & 41.21.232.70    & 324.90            & -                          & Sudafrica                      \\ \hline
+    \texttt{14} & 41.204.60.149   & 327.05            & -                          & Ghana                          \\ \hline
+    \texttt{15} & 41.204.60.150   & 327.73            & -                          & Ghana                          \\ \hline
+    \texttt{16} & 197.255.127.2   & 328.85            & -                          & Ghana                          \\ \hline
+    \texttt{17} & 197.255.125.10  & 331.42            & -                          & Ghana                          \\ \hline
+    \end{tabular}
+    \caption{Ruta Universidad de Moscow (www.ust.hk  - IP 143.89.14.2)}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                ybar,
+                xtick=data,
+                ylabel={RTT},
+                xlabel={Hop number}
+            ]
+            \addplot table[x=hop,y=rtt]{data/ghana.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
