@@ -46,35 +46,35 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
 
 
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-                ybar,
-                xtick=data,
-                width=15cm,
-                ymin = 0,
-                ylabel={RTT},
-                xlabel={Hop number}
-            ]
-            \addplot table[x=hop,y=rtt]{data/oxford.dat};
-        \end{axis}
-    \end{tikzpicture}
-\end{figure}
+%\begin{figure}[H]
+%    \centering
+%    \begin{tikzpicture}
+%        \begin{axis}[
+%                ybar,
+%                xtick=data,
+%                width=15cm,
+%                ymin = 0,
+%                ylabel={RTT},
+%                xlabel={Hop number}
+%            ]
+%            \addplot table[x=hop,y=rtt]{data/oxford.dat};
+%        \end{axis}
+%    \end{tikzpicture}
+%\end{figure}
 
 Con este gráfico podemos claramente observar los saltos negativos y en los que no hubo respuesta(estos
 últimos los notamos con RTT -1).
 
-Cuando los tiempos de ida y vuelta reportados por traceroute son falsas ocurre la esta anomalía, conocida
-como False Round-Trip Times . Generalmente hay dos razones, ya sean rutas de paquete asimétricos o enrutamiento
-MPLS. Cuando los respectivos caminos hacia y desde el destino son asimétricos, es decir, los paquetes se
-encaminan por senderos diferentes desde y hacia el objetivo, los tiempos de ida y vuelta pueden no
-reflejar el tiempo real que tarda un paquete para llegar al destino. El ida y vuelta resultantes muestran
-posteriormente los valores engañosos. La trayectoria real puede de hecho ser mucho más corto o más largo
-que el tiempo de ida y vuelta indica, dependiendo de la situación.
+%Cuando los tiempos de ida y vuelta reportados por traceroute son falsas ocurre la esta anomalía, conocida
+%como False Round-Trip Times . Generalmente hay dos razones, ya sean rutas de paquete asimétricos o enrutamiento
+%MPLS. Cuando los respectivos caminos hacia y desde el destino son asimétricos, es decir, los paquetes se
+%encaminan por senderos diferentes desde y hacia el objetivo, los tiempos de ida y vuelta pueden no
+%reflejar el tiempo real que tarda un paquete para llegar al destino. El ida y vuelta resultantes muestran
+%posteriormente los valores engañosos. La trayectoria real puede de hecho ser mucho más corto o más largo
+%que el tiempo de ida y vuelta indica, dependiendo de la situación.%
 
-MPLS es un caso similar al anterior y podría verse en que los tiempos de ida y vuelta casi equivalentes
-para varios saltos en el resultado de traceroute.
+%MPLS es un caso similar al anterior y podría verse en que los tiempos de ida y vuelta casi equivalentes
+%para varios saltos en el resultado de traceroute.
 
 Daremos nuestras hipótesis sobre que casos son los que identificamos.
 
@@ -111,7 +111,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
     \texttt{1} & 192.168.0.1      & 1.38    & -       & IP privada  \\ \hline
     \texttt{2} & *                & -       & -       & -   \\ \hline
     \texttt{3} & *                & -       & -       & -   \\ \hline
@@ -141,6 +141,8 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
+Graficamos los RTT en un histograma para lograr una mayor claridad en los cambios en los tiempos entre los hops:
+
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -157,11 +159,16 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \end{tikzpicture}
 \end{figure}
 
-A continuación analizamos los resultados del experimento utilizando las anomalias descriptas previamente:
+A continuación enumeramos las anomalías encontradas:
 \begin{itemize}
     \item \textit{Missing hops}: de los hops 2, 3, 4, 5, 10, 11, 23 y 24 no obtuvimos respuesta.
-    \item \textit{False RTT}: en los hops 15, 17, 20, 22.
+    \item \textit{False RTT por rutas asimétricas}: entre los hops 14-15, 16-17, 19-20, 21-22 obtuvimos valores negativos en el $\Delta RTT$, valores no consistentes. En particular el caso de los hops 21-22 es el más significativo. Por otro lado entre los hops 9-12 también encontramos una inconsistencia entre los valores de \texttt{RTT} de ambos hosts, independientemente de que no sean hosts consecutivos.
+    \item \textit{False RTT por MPLS routing}: la cercanía de los valores de \texttt{RTT} de los hops 14, 15, 16 y 17 y, por otro lado, los hops 18, 19 y 20, nos inducen a pensar que estos valores pueden caer dentro de la descripción de esta anomalía.
 \end{itemize}
+
+Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$) por abrumadora diferencia. Otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$). En menor medida podríamos especular con el enlace entre los hops 13-14 ($\Delta RTT = 41.17$) y el enlace entre los hops 20-21 ($\Delta RTT = 41.03$), sin embargo nos resulta inverosímil la existencia de 4 enlaces intercontinentales en la ruta de un paquete entre Argentina y Australia.
+
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Por otro lado el enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental. 
 
 \subsection{Universidad de Ghana}
 
