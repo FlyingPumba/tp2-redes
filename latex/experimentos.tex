@@ -45,22 +45,21 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
 Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
 
-
-%\begin{figure}[H]
-%    \centering
-%    \begin{tikzpicture}
-%        \begin{axis}[
-%                ybar,
-%                xtick=data,
-%                width=15cm,
-%                ymin = 0,
-%                ylabel={RTT},
-%                xlabel={Hop number}
-%            ]
-%            \addplot table[x=hop,y=rtt]{data/oxford.dat};
-%        \end{axis}
-%    \end{tikzpicture}
-%\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                ybar,
+                xtick=data,
+                width=15cm,
+                ymin = 0,
+                ylabel={RTT},
+                xlabel={Hop number}208.178.195.213
+            ]
+            %\addplot table[x=hop,y=rtt]{data/oxford.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
 
 Con este gráfico podemos claramente observar los saltos negativos y en los que no hubo respuesta(estos
 últimos los notamos con RTT -1).
@@ -76,12 +75,13 @@ Con este gráfico podemos claramente observar los saltos negativos y en los que 
 %MPLS es un caso similar al anterior y podría verse en que los tiempos de ida y vuelta casi equivalentes
 %para varios saltos en el resultado de traceroute.
 
-Daremos nuestras hipótesis sobre que casos son los que identificamos.
+Daremos nuestras hipótesis sobre que casos son los que identificamos para False RTT.
 
 \begin{itemize}
 \item Entre 4 y 5. Asimétricos.
 \item Entre 9 y 10. Asimétrico.
 \item Entre 12 y 13. Asimétrico.
+\item Entre 14 y 17. Lo contamos porque 15 y 16 corresponden a hops perdidos. Es Asimétrico.
 \end{itemize}
 
 Por otro lado, tenemos los que no tuvieron respuesta. Esta anomalía es conocida como Missing Hops.
@@ -89,18 +89,27 @@ Se produce en general cuando un router está protegido por un firewall o de conf
 generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
 
 El hops 6 pertenece a Estados Unidos pero el 9 pertenece a Gran Bretaña. Pensamos que a la hora de
-establecer el enlace continental se lo hizo primero con dos hops que nunca darán respuesta. La tercera
-vez que intenta establecer el enlace a Reino Unido el hops le da respuesta, en este caso el 9.
-Probando con la universidad de Cambrige, también ubicada en Gran Bretaña, se obtiene que también se
+establecer el enlace continental se lo hizo primero con dos hops que nunca darán respuestaNetherlandsambién se
 pierden hops entre una IP de Estados Unidos y la de Gran Bretaña. Como hipótesis alternativa
-podriamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
+podríamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
 
 En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Gran Bretaña(sin ubicar region
-ni ciudad) mientras que 17 pertenece a Oxford. 
+ni ciudad) mientras que 17 pertenece a Oxford. En este caso es más probable que se trate de un caso aislado
+ya que no existe un salto continental, solamente regional.
 
 Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233. Sin embargo esto
-es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos. El salto continental se produce entre
-6 y 9, aunque si vemos el gráfico de RRTs podemos apreciar que la diferencia no es muy grande.
+es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos(Aunque la primera no puede estar ubicada
+en ese lugar por razones que explicaremos más adelante). El salto continental se produce entre 6 y 9, aunque
+si vemos el gráfico de RRTs podemos apreciar que la diferencia no es muy grande.
+
+También podemos observar la anomalía de False Link en los hops 4 y 5 ya que muestran como ubicación a Estados Unidos
+, sin embargo los RTT de ambos no corresponden con la distancia que tuvieron que recorrer entre 3 y 4. El número 6
+posee un RTT más propio del primero ubicado en Estados Unidos. Una posible explicación para esta anomalía es que
+los servidores intermedios entre Argentina y Estados Unidos(posiblemente ubicados en Brasil) pertenecen a una
+compañía estadounidense y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación. Es posible
+que el hops 6 también sufra de esta anomalía ya que usando herramientas alternativas de geolocalización de IP nos dio
+de resultado Netherlands. Aunque creemos que es poco probable porque el RTT que existe entre Londres y este sería demasiado
+grande.
 
 \newpage
 
