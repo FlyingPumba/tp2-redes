@@ -249,7 +249,7 @@ A continuación analizamos la anomalias encontradas:
 %   \
 % \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -271,41 +271,45 @@ A continuación analizamos la anomalias encontradas:
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
 \begin{table}[ht]\begin{center}
-    \begin{tabular}{|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion}             \\ \hline
-    \texttt{1}  & 10.27.64.1      & 14.23             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
-    \texttt{2}  & 10.242.1.149    & 11.58             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
-    \texttt{3}  & 195.22.220.33   & 13.38             & -                          & Italia                         \\ \hline
-    \texttt{4}  & 195.22.220.32   & 11.97             & -                          & Italia                         \\ \hline
-    \texttt{5}  & 195.22.206.92   & 172.40            & -                          & Italia                         \\ \hline
-    \texttt{6}  & 195.22.206.92   & 172.13            & -                          & Italia                         \\ \hline
-    \texttt{7}  & 216.6.87.202    & 164.11            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{8}  & 216.6.87.169    & 255.53            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{9}  & 216.6.57.1      & 253.17            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{10} & 66.198.70.174   & 230.14            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{11} & 80.231.76.121   & 253.52            & -                          & Reino Unido, Europa            \\ \hline
-    \texttt{12} & 195.219.195.238 & 325.31            & -                          & Reino Unido, Europa            \\ \hline
-    \texttt{13} & 41.21.232.70    & 324.90            & -                          & Sudafrica                      \\ \hline
-    \texttt{14} & 41.204.60.149   & 327.05            & -                          & Ghana                          \\ \hline
-    \texttt{15} & 41.204.60.150   & 327.73            & -                          & Ghana                          \\ \hline
-    \texttt{16} & 197.255.127.2   & 328.85            & -                          & Ghana                          \\ \hline
-    \texttt{17} & 197.255.125.10  & 331.42            & -                          & Ghana                          \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{Ubicacion} \\ \hline
+    \texttt{1} &  192.168.1.1 & 0.36 & Local \\ \hline
+    \texttt{2} &  200.3.60.192 & 12.24 & Entre Ríos Province, AR \\ \hline
+    \texttt{3} &  181.88.108.18 & 16.01 & Entre Ríos Province, AR \\ \hline
+    \texttt{4} &  190.225.252.166 & 13.85 & Entre Ríos Province, AR \\ \hline
+    \texttt{5} &  195.22.220.213 & 11.73 & Italia \\ \hline
+    \texttt{6} &  195.22.219.3 & 38.76 & Italia \\ \hline
+    \texttt{7} &  195.22.219.3 & 38.63 & Italia \\ \hline
+    \texttt{8} &  149.3.181.65 & 87.87 & Italia \\ \hline
+    \texttt{9} &  129.250.2.227 & 208.21 & Colorado, US \\ \hline
+    \texttt{10} & 129.250.4.13 & 281.09 & Colorado, US \\ \hline
+    \texttt{11} & 129.250.2.38 & 422.20 & Colorado, US \\ \hline
+    \texttt{12} & 129.250.5.134 & 429.55 & Colorado, US \\ \hline
+    \texttt{13} & 129.250.6.115 & 432.51 & Colorado, US \\ \hline
+    \texttt{14} & 203.131.246.154 & 452.04 & Hong Kong \\ \hline
+    \texttt{15} & 115.160.187.110 & 444.46 & Hong Kong \\ \hline
+    \texttt{16} & 202.130.98.102 & 440.41 & Hong Kong \\ \hline
+    \texttt{17} & 203.188.117.130 & 440.65 & Hong Kong \\ \hline
+    \texttt{18} & 202.14.80.153 & 443.62 & Hong Kong \\ \hline
+    \texttt{19} & 143.89.14.2 & 448.84 & Hong Kong \\ \hline
     \end{tabular}
-    \caption{Ruta Universidad de Moscow (www.ust.hk  - IP 143.89.14.2)}
+    \caption{Ruta Universidad de Hong Kong de Ciencia y Tecnologia (www.ust.hk  - IP 143.89.14.2)}
 \end{center}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
                 ybar,
                 xtick=data,
+                width=15cm,
+                ymin = 0,
                 ylabel={RTT},
                 xlabel={Hop number}
             ]
-            \addplot table[x=hop,y=rtt]{data/ghana.dat};
+            \addplot table[x=hop,y=rtt]{data/hongkong.dat};
         \end{axis}
     \end{tikzpicture}
 \end{figure}
