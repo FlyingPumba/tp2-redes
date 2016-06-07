@@ -90,11 +90,9 @@ Se produce en general cuando un router está protegido por un firewall o de conf
 generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
 
 El hops 6 pertenece a Estados Unidos pero el 9 pertenece a Gran Bretaña. Pensamos que a la hora de
-establecer el enlace continental se lo hizo primero con dos hops que nunca darán respuesta. La tercera
-vez que intenta establecer el enlace a Reino Unido el hops le da respuesta, en este caso el 9.
-Probando con la universidad de Cambrige, también ubicada en Gran Bretaña, se obtiene que también se
+establecer el enlace continental se lo hizo primero con dos hops que nunca darán respuestaNetherlandsambién se
 pierden hops entre una IP de Estados Unidos y la de Gran Bretaña. Como hipótesis alternativa
-podriamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
+podríamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
 
 En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Gran Bretaña(sin ubicar region
 ni ciudad) mientras que 17 pertenece a Oxford. En este caso es más probable que se trate de un caso aislado
@@ -109,7 +107,10 @@ También podemos observar la anomalía de False Link en los hops 4 y 5 ya que mu
 , sin embargo los RTT de ambos no corresponden con la distancia que tuvieron que recorrer entre 3 y 4. El número 6
 posee un RTT más propio del primero ubicado en Estados Unidos. Una posible explicación para esta anomalía es que
 los servidores intermedios entre Argentina y Estados Unidos(posiblemente ubicados en Brasil) pertenecen a una
-compañia estodounidence y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación.
+compañía estadounidense y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación. Es posible
+que el hops 6 también sufra de esta anomalía ya que usando herramientas alternativas de geolocalización de IP nos dio
+de resultado Netherlands. Aunque creemos que es poco probable porque el RTT que existe entre Londres y este es demasiado
+grande.
 
 \newpage
 
