@@ -83,7 +83,7 @@ if __name__ == "__main__":
     intentos = 1
     if len(sys.argv) > 2 and sys.argv[2] == '-d':
         verbose = True
-        intentos = 4
+        intentos = 50
 
     ip = sys.argv[1]
     rutas_y_tiempos = []
