@@ -19,7 +19,7 @@ Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
-\begin{table}[ht]\begin{center}
+\begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ipinfo.io)} \\ \hline
@@ -107,7 +107,7 @@ Sin embargo esto podría ser incorrecto ya que la aplicación de geolocalizació
 
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
-\begin{table}[ht]\begin{center}
+\begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ipinfo.io)} \\ \hline
@@ -173,7 +173,7 @@ Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicaci
 
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
-\begin{table}[ht]\begin{center}
+\begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ipinfo.io)} \\ \hline
@@ -270,7 +270,7 @@ En este caso buscamos analizar los resultados de traceroute a una universidad de
 
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
-\begin{table}[ht]\begin{center}
+\begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ip2location.com)} \\ \hline
@@ -318,7 +318,7 @@ A continuación graficamos los \texttt{RTT} en función de los hops para analiza
 
 Como podemos ver, a gran escala los \texttt{Round Trip Times} parecen obedecer nuestra suposición de que iba a escalar fuertemente a medida que nos acercamos al destino. La cantidad de hops en total fue 19, algo bastante grande y lógico dada la distancia entre el origen (Argentina) y el destino (Hong Kong).
 
-Además pudimos verificar (manualmente a través de IP2Location) que hubieron varios saltos continentales:
+La aplicación de geolocalización utilizada en este caso, ip2location.com, estipula varios saltos continentales, siendo los mismos:
 \begin{itemize}
 \item Argentina (Sudamerica) - Italia (Europa) entre hops 5 y 6.
 \item Italia (Europa) - Brazil (Sudamerica) entre hops 7 y 8.
