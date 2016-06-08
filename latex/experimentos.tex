@@ -10,8 +10,8 @@ universidades:
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceos de carga de los routers.
 
-Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
-A partir de este cálculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP (\textbf{ipinfo.io o ip2location.com}).
+Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala\cite{Cimbala}. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
+A partir de este cálculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
@@ -168,7 +168,7 @@ A continuación enumeramos las anomalías encontradas:
 
 Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$). El otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$).
 
-Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geolocalizacion, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, pero si es un enlace submarino. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
 
 \subsection{Universidad de Ghana}
 
@@ -326,11 +326,15 @@ Además pudimos verificar (manualmente a través de IP2Location) que hubieron va
 \item Brazil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
 \item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
 \end{itemize}
-Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11).
 
-Con respecto a las anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
+Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11). Sin embargo existe claramente
+una anomalía de False Link en los de Italia, ya que la diferencia de RTTs que hay entre estas y las de Argentina son demasiado pequeñas. Esto podría deberse
+a que los servidores a los que pertenecen están hosteados en Italia, aunque se ubiquen físicamente en otro lugar(posiblemente Brazil). Entonces solo existe
+un salto continental y es el que detecto nuestra herramienta.
+
+Con respecto a las otras anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
 
 \begin{itemize}
 \item \texttt{False RTTs}: entre los hops 3 y 4, 4 y 5, 14 y 15, 15 y 16. Esto se puede deber a rutas asimétricas que hacen que la diferencia entre los RTTs de hops sucesivos sea negativa porque en el segundo hop, el traceroute vuelve por una ruta más rápida.
-\item \texttt{IP repetida}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
+\item \textit{Loop/Cycle}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
 \end{itemize}
