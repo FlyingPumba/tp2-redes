@@ -44,7 +44,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Oxford (ox.ac.uk - IP 129.67.242.154)}
 \end{center}\end{table}
 
-Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -140,7 +140,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
-Graficamos los RTT en un histograma para lograr una mayor claridad en los cambios en los tiempos entre los hops:
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -183,7 +183,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{4}  & 195.22.220.32   & 11.97             & -1.41                 & Italia                         \\ \hline
     \texttt{5}  & 195.22.206.92   & 172.40            & 160.43                & Italia                         \\ \hline
     \texttt{6}  & 195.22.206.92   & 172.13            & 0.27                  & Italia                         \\ \hline
-    \texttt{7}  & 216.6.87.202    & 164.11            & 8.02                  & Delaware, Estados Unidos       \\ \hline
+    \texttt{7}  & 216.6.87.202    & 164.11            & -8.02                 & Delaware, Estados Unidos       \\ \hline
     \texttt{8}  & 216.6.87.169    & 255.53            & 91.42                 & Delaware, Estados Unidos       \\ \hline
     \texttt{9}  & 216.6.57.1      & 253.17            & -2.36                 & Delaware, Estados Unidos       \\ \hline
     \texttt{10} & 66.198.70.174   & 230.14            & -23.03                & Delaware, Estados Unidos       \\ \hline
@@ -199,21 +199,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \end{center}
 \end{table}
 
-A continuación analizamos la anomalias encontradas:
-
-\begin{itemize}
-  \item En primer lugar es interesante notar que los primeros dos hops son IPs privada, lo que podría significar que el proveedor de internet asigna una IP privada al router que provee internet a la computadora desde la cual se realizó el traceroute. EXPLICAR MEJOR
-  \item \textit{loop}: el hop 5 y 6 tienen la misma IP. EXPLICAR
-  \item \textit{false RTT}: en los hops 2, 4, 7 y 10. DIFERENCIAR SIGNIFICATIVOS
-\end{itemize}
-
-Mirando a las ubicaciones que devuelve la herramienta de geolocalización encontramos las siguientes curiosidades:
-
-\begin{itemize}
-  \item Para los hops 3 y 4, la herramienta de geolocalización nos informa que la ubicación de esas IPs es Italia. Sin embargo, al tener ambas IPs RTTs muy chicos y la organización asociada ser ``AS6762 TELECOM ITALIA SPARKLE S.p.A.'' podemos inferir que son routers en Argentina, de la empresa Telecom.
-  \item Para el hop 7,  la herramienta de geolocalización nos informa que la ubicación de esa IP es Estados Unidos. Sin embargo, al tener un RTT muy parecido al del hop 6, que está en Italia, deducimos que en realidad es un router en Italia, con una IP de Estados Unidos.
-  \item SEGUIR
-\end{itemize}
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -230,6 +216,52 @@ Mirando a las ubicaciones que devuelve la herramienta de geolocalización encont
         \end{axis}
     \end{tikzpicture}
 \end{figure}
+
+En primer lugar es interesante notar que los primeros dos hops muestran IPs privadas. Aunque no encontramos una explicación clara, podemos especular que estas corresponden a dos routers de un mismo proveedor de internet, quien les asignó IPs privadas para ahorrar IPs públicas.
+
+Pasamos a analizar las anomalias encontradas:
+
+\begin{itemize}
+  \item \textit{Loop/Cycle}: en los hops 5 y 6, que tienen la misma IP. Esto podría suceder por diversas razones:
+      \begin{itemize}
+        \item Debido a que el hop 5 fowardea paquetes con TTL 0.
+        \item Un ciclo que termina en la IP en cuestion, y que no deja ver cual es la IP verdadera del hop 5.
+      \end{itemize}
+  \item \textit{False RTT por rutas asimetricas}: en los hops 2, 4, 10 y 13 por tener incremento negativo en los saltos. El único salto de estos que podría llegar a ser debido a MPLS es el del hop 13 ($\Delta RTT = -0.41$), pero no fue posible confirmarlo.
+\end{itemize}
+
+Mostramos ahora los enlaces candidatos a salto continental que arroja nuestra herramienta, contrastandolos con las ubicaciones arrojadas por la aplicación de geolocalización:
+
+\begin{enumerate}
+  \item Enlace entre los hops 4 y 5 ($\Delta RTT = 160.43$): Por la diferencias entre RTTs es claro que este enlace es un salto continental. Sin embargo, la aplicación de geolocalización nos dice que las IPs de los hops 3, 4, 5 y 6 corresponden a Italia, por lo que entonces estaríamos en un caso de falso positivo.
+
+    Pero, dado que los $\Delta RTT$ entre los hops 3 y 4, y 5 y 6 son chicos, y que todas estas IPs tienen asociada la organización ``AS6762 TELECOM ITALIA SPARKLE S.p.A.'', concluimos que:
+
+    \begin{itemize}
+      \item Los hops 3 y 4 corresponden en realidad a routers en Argentina, con IPs asignadas a Italia.
+      \item Los hops 5 y 6 corresponden efectivamente a routers en Italia, con IPs asignadas a Italia.
+      \item El enlace entre los hops 4 y 5 es efectivamente un salto continental.
+    \end{itemize}
+
+  \item Enlace entre los hops 7 y 8 ($\Delta RTT = 91.42$): Por la diferencias entre RTTs es claro que este enlace es un salto continental. Sin embargo, la aplicación de geolocalización nos dice que las IPs de los hops 7 y 8 corresponden a Estados Unidos, por lo que entonces estaríamos en un caso de falso positivo.
+
+  Pero, dado que el $\Delta RTT$ entre los hops 6 y 7 es chico, y el hop 6 corresponde a Italia, podemos concluir que:
+  \begin{itemize}
+    \item El hop 7 corresponde en realidad a un router en Italia, con IP asignada a Estados Unidos.
+    \item El enlace entre los hops 7 y 8 es efectivamente un salto continental.
+  \end{itemize}
+
+  \item Enlace entre los hops 11 y 12 ($\Delta RTT = 71.79$): Las diferencias entre RTTs nos inducen a pensar que este enlace es un salto continental, aunque la aplicación de geolocalización no nos provee información acerca de la posible ubicación de estas IPs.
+
+    Sin embargo, debido a que el hop 10 corresponde a Estados Unidos, y el 13 a Sudafrica concluimos que el enlace es efectivamente un salto continental, y que el hop 11 corresponde un router en Estados Unidos y el hop 12 a un router en Sudafrica.
+  \item Enlace entre los hops 10 y 11 ($\Delta RTT = 23.38$): en base a lo concluido para el enlace entre los hops 11 y 12, este caso sería un falso positivo.
+  \item Enlace entre los hops 9 y 10 ($\Delta RTT = -23.03$): este enlace parecería ser un falso positivo, por varias razones:
+      \begin{itemize}
+        \item La aplicación de geolocalización informa que ambas IPs están asignadas a Delaware, Estados Unidos.
+        \item El salto es negativo, lo cual podría implicar un congestionamiento en algún router.
+      \end{itemize}
+  \item Enlace entre los hops 6 y 7 ($\Delta RTT = -8.02$): en base a lo concluido para el enlace entre los hops 7 y 8, este caso sería un falso positivo.
+\end{enumerate}
 
 
 \subsection{Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)}
@@ -266,7 +298,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \end{center}
 \end{table}
 
-Adicionalmente graficamos los \texttt{Round Trip Times} en función de los hops para analizar más facilmente las anomalías detectadas.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
