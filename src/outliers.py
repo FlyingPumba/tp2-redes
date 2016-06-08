@@ -31,21 +31,13 @@ def quitarOutliers(datos):
         tau = (t_a2*(cantDatos-1))/(math.sqrt(cantDatos)*math.sqrt(cantDatos-2+t_a2**2))
         tS = tau*desvio
 
-        #print (media)
-        #print (desvio)
-        #print (valorAbsolutoMin)
-        #print (valorAbsolutoMax)
-        #print (t_a2)
-        #print (tau)
-        #print (tS)
-
         if valorAbsolutoMax > valorAbsolutoMin:
             if valorAbsolutoMax > tS:
                 #Este es el caso en el que tengo que quitar el elemento
                 for i in range(0,cantDatos):
                     if datos[i] == max_:
+                        print "\nPosible salto continental entre los hops: %d - %d" % (i+1, i+2)
                         datos.pop(i)
-                        # print ("Se quito un outlier")
                         break
             else:
                 hayOutliers = False
@@ -54,8 +46,8 @@ def quitarOutliers(datos):
                 #Este es el caso en el que tengo que quitar el elemento
                 for i in range(0,cantDatos):
                     if datos[i] == min_:
+                        print "\nPosible salto continental entre los hops: %d - %d" % (i+1, i+2)
                         datos.pop(i)
-                        # print ("Se quito un outlier")
                         break
             else:
                 hayOutliers = False
