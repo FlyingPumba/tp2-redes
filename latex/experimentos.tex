@@ -22,29 +22,28 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \hline
     \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
     \texttt{1} & 192.168.0.1      &1.61       & -       & IP privada   \\ \hline
-    \texttt{2} & 10.27.128.1      &9.35       & -       & IP privada  \\ \hline
-    \texttt{3} & 10.242.1.61      & 10.83     & -       & IP privada  \\ \hline
-    \texttt{4} & 208.178.195.214  & 12.40     & -       & Estados Unidos   \\ \hline
-    \texttt{5} & 208.178.195.213  & 10.80     & -       & Estados Unidos   \\ \hline
-    \texttt{6} & 67.17.99.233     & 137.77    & -       & Estados Unidos    \\ \hline
+    \texttt{2} & 10.27.128.1      &9.35       & 7,74       & IP privada  \\ \hline
+    \texttt{3} & 10.242.1.61      & 10.83     & 1,48       & IP privada  \\ \hline
+    \texttt{4} & 208.178.195.214  & 12.40     & 1,57       & Estados Unidos   \\ \hline
+    \texttt{5} & 208.178.195.213  & 10.80     & −1,6       & Estados Unidos   \\ \hline
+    \texttt{6} & 67.17.99.233     & 137.77    & 126,97       & Estados Unidos    \\ \hline
     \texttt{7} & *                & -        & -       & -   \\ \hline
     \texttt{8} & *                & -        & -       & -   \\ \hline
     \texttt{9} & 212.187.139.166  & 239.16    & -       & Gran Bretaña   \\ \hline
-    \texttt{10} & 146.97.33.2     & 238.03    & -       & Gran Bretaña   \\ \hline
-    \texttt{11} & 146.97.37.194   & 238.17    & -       & Gran Bretaña    \\ \hline
-    \texttt{12} & 193.63.108.94   & 245.87    & -       &  Gran Bretaña \\ \hline
-    \texttt{13} & 193.63.108.98   & 238.36    & -       & Gran Bretaña   \\ \hline
-    \texttt{14} & 193.63.109.90   & 248.00    & -       & Gran Bretaña    \\ \hline
+    \texttt{10} & 146.97.33.2     & 238.03    & −1,13       & Gran Bretaña   \\ \hline
+    \texttt{11} & 146.97.37.194   & 238.17    & 0,14       & Gran Bretaña    \\ \hline
+    \texttt{12} & 193.63.108.94   & 245.87    & 7,7       &  Gran Bretaña \\ \hline
+    \texttt{13} & 193.63.108.98   & 238.36    & −7,51       & Gran Bretaña   \\ \hline
+    \texttt{14} & 193.63.109.90   & 248.00    & 9,64       & Gran Bretaña    \\ \hline
     \texttt{15} & *               & -        & -       & -   \\ \hline
     \texttt{16} & *               & -        & -       & -    \\ \hline
     \texttt{17} & 192.76.32.62    & 234.21    & -       & Oxford, Inglaterra, Gran Bretaña   \\ \hline
-    \texttt{18} & 129.67.242.154  & 241.62    & -       & Oxfordshire, Gran Bretaña   \\ \hline
+    \texttt{18} & 129.67.242.154  & 241.62    & 7,41       & Oxfordshire, Gran Bretaña   \\ \hline
     \end{tabular}
     \caption{Ruta Universidad de Oxford (ox.ac.uk - IP 129.67.242.154)}
 \end{center}\end{table}
 
 Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
-
 
 \begin{figure}[H]
     \centering
@@ -57,7 +56,7 @@ Una vez mandados los paquetes y realizados los promedios, procederemos a grafica
                 ylabel={RTT},
                 xlabel={Hop number}208.178.195.213
             ]
-            %\addplot table[x=hop,y=rtt]{data/oxford.dat};
+            \addplot table[x=hop,y=rtt]{data/oxford.dat};
         \end{axis}
     \end{tikzpicture}
 \end{figure}
@@ -65,18 +64,18 @@ Una vez mandados los paquetes y realizados los promedios, procederemos a grafica
 Con este gráfico podemos claramente observar los saltos negativos y en los que no hubo respuesta(estos
 últimos los notamos con RTT -1).
 
-Cuando los tiempos de ida y vuelta reportados por traceroute son falsas ocurre la esta anomalía, conocida
-como False Round-Trip Times . Generalmente hay dos razones, ya sean rutas de paquete asimétricos o enrutamiento
-MPLS. Cuando los respectivos caminos hacia y desde el destino son asimétricos, es decir, los paquetes se
-encaminan por senderos diferentes desde y hacia el objetivo, los tiempos de ida y vuelta pueden no
-reflejar el tiempo real que tarda un paquete para llegar al destino. El ida y vuelta resultantes muestran
-posteriormente los valores engañosos. La trayectoria real puede de hecho ser mucho más corto o más largo
-que el tiempo de ida y vuelta indica, dependiendo de la situación.
+%Cuando los tiempos de ida y vuelta reportados por traceroute son falsas ocurre la esta anomalía, conocida
+%como False Round-Trip Times . Generalmente hay dos razones, ya sean rutas de paquete asimétricos o enrutamiento
+%MPLS. Cuando los respectivos caminos hacia y desde el destino son asimétricos, es decir, los paquetes se
+%encaminan por senderos diferentes desde y hacia el objetivo, los tiempos de ida y vuelta pueden no
+%reflejar el tiempo real que tarda un paquete para llegar al destino. El ida y vuelta resultantes muestran
+%posteriormente los valores engañosos. La trayectoria real puede de hecho ser mucho más corto o más largo
+%que el tiempo de ida y vuelta indica, dependiendo de la situación.%
 
-MPLS es un caso similar al anterior y podría verse en que los tiempos de ida y vuelta casi equivalentes
-para varios saltos en el resultado de traceroute.
+%MPLS es un caso similar al anterior y podría verse en que los tiempos de ida y vuelta casi equivalentes
+%para varios saltos en el resultado de traceroute.
 
-Daremos nuestras hipótesis sobre que casos son los que identificamos.
+Daremos nuestras hipótesis sobre que casos son los que identificamos para False RTT.
 
 \begin{itemize}
 \item Entre 4 y 5. Asimétricos.
@@ -90,7 +89,7 @@ Se produce en general cuando un router está protegido por un firewall o de conf
 generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
 
 El hops 6 pertenece a Estados Unidos pero el 9 pertenece a Gran Bretaña. Pensamos que a la hora de
-establecer el enlace continental se lo hizo primero con dos hops que nunca darán respuestaNetherlandsambién se
+establecer el enlace continental se lo hizo primero con dos hops que nunca darán respuesta, también se
 pierden hops entre una IP de Estados Unidos y la de Gran Bretaña. Como hipótesis alternativa
 podríamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
 
@@ -98,8 +97,8 @@ En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Gran Breta
 ni ciudad) mientras que 17 pertenece a Oxford. En este caso es más probable que se trate de un caso aislado
 ya que no existe un salto continental, solamente regional.
 
-Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233. Sin embargo esto
-es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos(Aunque la primera no puede estar ubicada
+Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233, dado que entre estos es mayor el $\Delta RTT$.
+Sin embargo esto es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos(Aunque la primera no puede estar ubicada
 en ese lugar por razones que explicaremos más adelante). El salto continental se produce entre 6 y 9, aunque
 si vemos el gráfico de RRTs podemos apreciar que la diferencia no es muy grande.
 
@@ -109,7 +108,7 @@ posee un RTT más propio del primero ubicado en Estados Unidos. Una posible expl
 los servidores intermedios entre Argentina y Estados Unidos(posiblemente ubicados en Brasil) pertenecen a una
 compañía estadounidense y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación. Es posible
 que el hops 6 también sufra de esta anomalía ya que usando herramientas alternativas de geolocalización de IP nos dio
-de resultado Netherlands. Aunque creemos que es poco probable porque el RTT que existe entre Londres y este es demasiado
+de resultado Netherlands. Aunque creemos que es poco probable porque el RTT que existe entre Londres y este sería demasiado
 grande.
 
 \newpage
@@ -121,7 +120,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
     \texttt{1} & 192.168.0.1      & 1.38    & -       & IP privada  \\ \hline
     \texttt{2} & *                & -       & -       & -   \\ \hline
     \texttt{3} & *                & -       & -       & -   \\ \hline
@@ -151,6 +150,8 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
+Graficamos los RTT en un histograma para lograr una mayor claridad en los cambios en los tiempos entre los hops:
+
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -167,11 +168,16 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \end{tikzpicture}
 \end{figure}
 
-A continuación analizamos los resultados del experimento utilizando las anomalias descriptas previamente:
+A continuación enumeramos las anomalías encontradas:
 \begin{itemize}
     \item \textit{Missing hops}: de los hops 2, 3, 4, 5, 10, 11, 23 y 24 no obtuvimos respuesta.
-    \item \textit{False RTT}: en los hops 15, 17, 20, 22.
+    \item \textit{False RTT por rutas asimétricas}: entre los hops 14-15, 16-17, 19-20, 21-22 obtuvimos valores negativos en el $\Delta RTT$, valores no consistentes. En particular el caso de los hops 21-22 es el más significativo. Por otro lado entre los hops 9-12 también encontramos una inconsistencia entre los valores de \texttt{RTT} de ambos hosts, independientemente de que no sean hosts consecutivos.
+    \item \textit{False RTT por MPLS routing}: la cercanía de los valores de \texttt{RTT} de los hops 14, 15, 16 y 17 y, por otro lado, los hops 18, 19 y 20, nos inducen a pensar que estos valores pueden caer dentro de la descripción de esta anomalía.
 \end{itemize}
+
+Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$) por abrumadora diferencia. Otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$). En menor medida podríamos especular con el enlace entre los hops 13-14 ($\Delta RTT = 41.17$) y el enlace entre los hops 20-21 ($\Delta RTT = 41.03$), sin embargo nos resulta inverosímil la existencia de 4 enlaces intercontinentales en la ruta de un paquete entre Argentina y Australia.
+
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Por otro lado el enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
 
 \subsection{Universidad de Ghana}
 
