@@ -56,7 +56,7 @@ Una vez mandados los paquetes y realizados los promedios, procederemos a grafica
                 ylabel={RTT},
                 xlabel={Hop number}208.178.195.213
             ]
-            %\addplot table[x=hop,y=rtt]{data/oxford.dat};
+            \addplot table[x=hop,y=rtt]{data/oxford.dat};
         \end{axis}
     \end{tikzpicture}
 \end{figure}
@@ -234,25 +234,27 @@ A continuación analizamos la anomalias encontradas:
 
 \subsection{Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)}
 
+En este caso buscamos analizar los resultados de traceroute a una universidad de Hong Kong. Dada su ubicación en Asia, esperamos un gran aumento del RTT a medida que nos acercamos al destino, asi como una gran cantidad de Hops y uno o varios saltos continentales.
+
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{Ubicacion} \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{Ubicacion (IP2Location)} \\ \hline
     \texttt{1} &  192.168.1.1 & 0.36 & Local \\ \hline
-    \texttt{2} &  200.3.60.192 & 12.24 & Entre Ríos Province, AR \\ \hline
-    \texttt{3} &  181.88.108.18 & 16.01 & Entre Ríos Province, AR \\ \hline
-    \texttt{4} &  190.225.252.166 & 13.85 & Entre Ríos Province, AR \\ \hline
-    \texttt{5} &  195.22.220.213 & 11.73 & Italia \\ \hline
+    \texttt{2} &  200.3.60.192 & 12.24 & Buenos Aires \\ \hline
+    \texttt{3} &  181.88.108.18 & 16.01 & Buenos Aires \\ \hline
+    \texttt{4} &  190.225.252.166 & 13.85 & Buenos Aires \\ \hline
+    \texttt{5} &  195.22.220.213 & 11.73 & Buenos Aires \\ \hline
     \texttt{6} &  195.22.219.3 & 38.76 & Italia \\ \hline
     \texttt{7} &  195.22.219.3 & 38.63 & Italia \\ \hline
-    \texttt{8} &  149.3.181.65 & 87.87 & Italia \\ \hline
-    \texttt{9} &  129.250.2.227 & 208.21 & Colorado, US \\ \hline
-    \texttt{10} & 129.250.4.13 & 281.09 & Colorado, US \\ \hline
-    \texttt{11} & 129.250.2.38 & 422.20 & Colorado, US \\ \hline
-    \texttt{12} & 129.250.5.134 & 429.55 & Colorado, US \\ \hline
-    \texttt{13} & 129.250.6.115 & 432.51 & Colorado, US \\ \hline
+    \texttt{8} &  149.3.181.65 & 87.87 & Brazil \\ \hline
+    \texttt{9} &  129.250.2.227 & 208.21 & Nueva York, US \\ \hline
+    \texttt{10} & 129.250.4.13 & 281.09 & Washington, US \\ \hline
+    \texttt{11} & 129.250.2.38 & 422.20 & Tokyo, Japón \\ \hline
+    \texttt{12} & 129.250.5.134 & 429.55 & Hong Kong \\ \hline
+    \texttt{13} & 129.250.6.115 & 432.51 & Hong Kong \\ \hline
     \texttt{14} & 203.131.246.154 & 452.04 & Hong Kong \\ \hline
     \texttt{15} & 115.160.187.110 & 444.46 & Hong Kong \\ \hline
     \texttt{16} & 202.130.98.102 & 440.41 & Hong Kong \\ \hline
@@ -263,6 +265,8 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Hong Kong de Ciencia y Tecnologia (www.ust.hk  - IP 143.89.14.2)}
 \end{center}
 \end{table}
+
+Adicionalmente graficamos los \texttt{Round Trip Times} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -279,3 +283,21 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
         \end{axis}
     \end{tikzpicture}
 \end{figure}
+
+Como podemos ver, a gran escala los \texttt{Round Trip Times} parecen obedecer nuestra suposición de que iba a escalar fuertemente a medida que nos acercamos al destino. La cantidad de hops en total fue 19, algo bastante grande y lógico dada la distancia entre el origen (Argentina) y el destino (Hong Kong).
+
+Además pudimos verificar (manualmente a través de IP2Location) que hubieron varios saltos continentales:
+\begin{itemize}
+\item Argentina (Sudamerica) - Italia (Europa) entre hops 5 y 6.
+\item Italia (Europa) - Brazil (Sudamerica) entre hops 7 y 8.
+\item Brazil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
+\item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
+\end{itemize}
+Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11).
+
+Con respecto a las anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
+
+\begin{itemize}
+\item \texttt{False RTTs}: entre los hops 3 y 4, 4 y 5, 14 y 15, 15 y 16. Esto se puede deber a rutas asimétricas que hacen que la diferencia entre los RTTs de hops sucesivos sea negativa porque en el segundo hop, el traceroute vuelve por una ruta más rápida.
+\item \texttt{IP repetida}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
+\end{itemize}

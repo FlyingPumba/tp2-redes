@@ -83,7 +83,7 @@ if __name__ == "__main__":
     intentos = 1
     if len(sys.argv) > 2 and sys.argv[2] == '-d':
         verbose = True
-        intentos = 50
+        intentos = 4
 
     ip = sys.argv[1]
     rutas_y_tiempos = []
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         ruta, tiempos = obtener_ruta(ip, verbose)
         rutas_y_tiempos.append((ruta, tiempos))
 
-    if verbose: 
+    if verbose:
 
         print ""
 
@@ -115,24 +115,31 @@ if __name__ == "__main__":
         print ""
         print "\tTiempos sin outliers y promediados: %s\n" % tiempos_sin_outliers
 
-        # Busco maximo delta en tiempos para ver posible candidato a salto continental
-        max_delta = -1
-        last_time = tiempos_sin_outliers[0]
-        ip_src_salto = ""
-        ip_dst_salto = ""
-        for i in range(1, len(tiempos_sin_outliers)):
-            new_time = tiempos_sin_outliers[i]
-            if new_time != -1 and last_time != -1:
-                delta = new_time - last_time
+        # Busco outliers como candidatos a salto intercontinentales, primero calculo los delta_rtt
+        delta_rtt_hops = []
+        delta_rtt_tiempos = []
+        delta = 0
+        rtt_anterior = tiempos_sin_outliers[0]
+        ip_anterior = ruta_comun[0]
+        for i in range(1, len(ruta_comun)):
+            rtt_actual = tiempos_sin_outliers[i]
+            ip_actual = ruta_comun[i]
+            if rtt_actual != -1 and rtt_anterior != -1:
+                delta = rtt_actual - rtt_anterior
+                delta_rtt_ip = str(ip_anterior) + "-" + str(ip_actual)
+                delta_rtt_hops.append(delta_rtt_ip)
+                delta_rtt_tiempos.append(delta)
                 if delta < 0:
                     print "\tWarning: salto negativo entre los hops %d y %d" % (i-1, i)
-                if delta > max_delta:
-                    max_delta = delta
-                    ip_src_salto = ruta_comun[i-1]
-                    ip_dst_salto = ruta_comun[i]
-            last_time = new_time
-
-        print "\nPosible salto continental entre las IPs: %s - %s" % (ip_src_salto, ip_dst_salto)
+            rtt_anterior = rtt_actual
+            ip_anterior = ip_actual
+        delta_rtt_tiempos_aux = list(delta_rtt_tiempos)
+        # Me quedo con los outliers
+        outliers = quitarOutliers(delta_rtt_tiempos_aux)
+        for hop in xrange(len(outliers)):
+            for i in xrange(len(delta_rtt_tiempos)):
+                if outliers[hop] == delta_rtt_tiempos[i]:
+                    print "\nPosible salto continental entre las IPs: %s" % (delta_rtt_hops[i])
 
         print "\nGeolocalizacion de las IPs:"
         for ip in ruta_comun:
