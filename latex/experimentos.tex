@@ -9,7 +9,8 @@ universidades:
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
 
-Para identificar los saltos intercontinentales calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Siendo los candidatos a saltos intercontinentales los pares de hops con $\Delta RTT$ mayor al resto. A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ref a geolookip o lo que sea}).
+Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
+A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
@@ -20,7 +21,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion} \\ \hline
     \texttt{1} & 192.168.0.1      &1.61       & -       & IP privada   \\ \hline
     \texttt{2} & 10.27.128.1      &9.35       & 7,74       & IP privada  \\ \hline
     \texttt{3} & 10.242.1.61      & 10.83     & 1,48       & IP privada  \\ \hline
@@ -120,7 +121,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
     \texttt{1} & 192.168.0.1      & 1.38    & -       & IP privada  \\ \hline
     \texttt{2} & *                & -       & -       & -   \\ \hline
     \texttt{3} & *                & -       & -       & -   \\ \hline
@@ -128,7 +129,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{5} & *                & -       & -       & -   \\ \hline
     \texttt{6} & 200.89.165.9     & 14.06   & -       & Argentina    \\ \hline
     \texttt{7} & 200.89.165.250   & 14.71    & 0.65   & Argentina   \\ \hline
-    \texttt{8} & 190.216.88.33    & 16.23    & 10.33  & Ciudad de Buenos Aires, Argentina   \\ \hline
+    \texttt{8} & 190.216.88.33    & 16.23    & 1.52  & Ciudad de Buenos Aires, Argentina   \\ \hline
     \texttt{9} & 67.17.94.249     & 240.04  & 223.81 & Estados Unidos   \\ \hline
     \texttt{10} & *               & -       & -       & -   \\ \hline
     \texttt{11} & *               & -       & -       & -    \\ \hline
@@ -142,7 +143,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{19} & 113.197.15.68   & 377.51  & 6.17    & Canberra, Australia   \\ \hline
     \texttt{20} & 113.197.15.66   & 377.32  & -0.19   & Canberra, Australia   \\ \hline
     \texttt{21} & 113.197.15.152  & 418.35  & 41.03   & Canberra, Australia    \\ \hline
-    \texttt{22} & 138.44.5.47     & 371.39  & -46.96  & Victoria, Australia   \\ \hline
+    \texttt{22} & 138.44.5.47     & 391.39  & -26.96  & Victoria, Australia   \\ \hline
     \texttt{23} & *               & -       & -       & -                \\ \hline
     \texttt{24} & *               & -       & -       & -   \\ \hline
     \texttt{25} & 129.78.5.8      & 446.28  & -       & Sydney, Australia   \\ \hline
@@ -171,13 +172,13 @@ Graficamos los RTT en un histograma para lograr una mayor claridad en los cambio
 A continuación enumeramos las anomalías encontradas:
 \begin{itemize}
     \item \textit{Missing hops}: de los hops 2, 3, 4, 5, 10, 11, 23 y 24 no obtuvimos respuesta.
-    \item \textit{False RTT por rutas asimétricas}: entre los hops 14-15, 16-17, 19-20, 21-22 obtuvimos valores negativos en el $\Delta RTT$, valores no consistentes. En particular el caso de los hops 21-22 es el más significativo. Por otro lado entre los hops 9-12 también encontramos una inconsistencia entre los valores de \texttt{RTT} de ambos hosts, independientemente de que no sean hosts consecutivos.
+    \item \textit{False RTT por rutas asimétricas}: entre los hops 14-15, 16-17, 19-20, 21-22 obtuvimos valores negativos en el $\Delta RTT$, valores no consistentes. En particular el caso de los hops 21-22 es el más significativo, especulamos que en este caso la ruta de vuelta de los paquetes difiere considerablemente con respecto a la ida. Por otro lado entre los hops 9-12 también encontramos una inconsistencia considerable entre los valores de \texttt{RTT} de ambos hosts, independientemente de que no sean hosts consecutivos. Nuevamente especulamos con rutas de ida y vuelta que difieren significativamente.
     \item \textit{False RTT por MPLS routing}: la cercanía de los valores de \texttt{RTT} de los hops 14, 15, 16 y 17 y, por otro lado, los hops 18, 19 y 20, nos inducen a pensar que estos valores pueden caer dentro de la descripción de esta anomalía.
 \end{itemize}
 
-Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$) por abrumadora diferencia. Otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$). En menor medida podríamos especular con el enlace entre los hops 13-14 ($\Delta RTT = 41.17$) y el enlace entre los hops 20-21 ($\Delta RTT = 41.03$), sin embargo nos resulta inverosímil la existencia de 4 enlaces intercontinentales en la ruta de un paquete entre Argentina y Australia.
+Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$). El otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$).
 
-Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Por otro lado el enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
 
 \subsection{Universidad de Ghana}
 
@@ -186,7 +187,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion}             \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion}             \\ \hline
     \texttt{1}  & 10.27.64.1      & 14.23             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
     \texttt{2}  & 10.242.1.149    & 11.58             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
     \texttt{3}  & 195.22.220.33   & 13.38             & -                          & Italia                         \\ \hline
@@ -239,28 +240,28 @@ En este caso buscamos analizar los resultados de traceroute a una universidad de
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
 \begin{table}[ht]\begin{center}
-    \begin{tabular}{|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{Ubicacion (IP2Location)} \\ \hline
-    \texttt{1} &  192.168.1.1 & 0.36 & Local \\ \hline
-    \texttt{2} &  200.3.60.192 & 12.24 & Buenos Aires \\ \hline
-    \texttt{3} &  181.88.108.18 & 16.01 & Buenos Aires \\ \hline
-    \texttt{4} &  190.225.252.166 & 13.85 & Buenos Aires \\ \hline
-    \texttt{5} &  195.22.220.213 & 11.73 & Buenos Aires \\ \hline
-    \texttt{6} &  195.22.219.3 & 38.76 & Italia \\ \hline
-    \texttt{7} &  195.22.219.3 & 38.63 & Italia \\ \hline
-    \texttt{8} &  149.3.181.65 & 87.87 & Brazil \\ \hline
-    \texttt{9} &  129.250.2.227 & 208.21 & Nueva York, US \\ \hline
-    \texttt{10} & 129.250.4.13 & 281.09 & Washington, US \\ \hline
-    \texttt{11} & 129.250.2.38 & 422.20 & Tokyo, Japón \\ \hline
-    \texttt{12} & 129.250.5.134 & 429.55 & Hong Kong \\ \hline
-    \texttt{13} & 129.250.6.115 & 432.51 & Hong Kong \\ \hline
-    \texttt{14} & 203.131.246.154 & 452.04 & Hong Kong \\ \hline
-    \texttt{15} & 115.160.187.110 & 444.46 & Hong Kong \\ \hline
-    \texttt{16} & 202.130.98.102 & 440.41 & Hong Kong \\ \hline
-    \texttt{17} & 203.188.117.130 & 440.65 & Hong Kong \\ \hline
-    \texttt{18} & 202.14.80.153 & 443.62 & Hong Kong \\ \hline
-    \texttt{19} & 143.89.14.2 & 448.84 & Hong Kong \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (IP2Location)} \\ \hline
+    \texttt{1} &  192.168.1.1 & 0.36        &  -        & Local \\ \hline
+    \texttt{2} &  200.3.60.192 & 12.24      & 11.88     & Buenos Aires \\ \hline
+    \texttt{3} &  181.88.108.18 & 16.01     & 3.77      & Buenos Aires \\ \hline
+    \texttt{4} &  190.225.252.166 & 13.85   & -2.16     & Buenos Aires \\ \hline
+    \texttt{5} &  195.22.220.213 & 11.73    & -2.11     & Buenos Aires \\ \hline
+    \texttt{6} &  195.22.219.3 & 38.76      & 27.02     & Italia \\ \hline
+    \texttt{7} &  195.22.219.3 & 38.63      & -0.13     & Italia \\ \hline
+    \texttt{8} &  149.3.181.65 & 87.87      & 49.24     & Brazil \\ \hline
+    \texttt{9} &  129.250.2.227 & 208.21    & 120.33    & Nueva York, US \\ \hline
+    \texttt{10} & 129.250.4.13 & 281.09     & 72.87     & Washington, US \\ \hline
+    \texttt{11} & 129.250.2.38 & 422.20     & 141.11    & Tokyo, Japón \\ \hline
+    \texttt{12} & 129.250.5.134 & 429.55    & 7.34      & Hong Kong \\ \hline
+    \texttt{13} & 129.250.6.115 & 432.51    & 2.96      & Hong Kong \\ \hline
+    \texttt{14} & 203.131.246.154 & 452.04  & 19.52     & Hong Kong \\ \hline
+    \texttt{15} & 115.160.187.110 & 444.46  & -7.57     & Hong Kong \\ \hline
+    \texttt{16} & 202.130.98.102 & 440.41   & -4.05     & Hong Kong \\ \hline
+    \texttt{17} & 203.188.117.130 & 440.65  & 0.24      & Hong Kong \\ \hline
+    \texttt{18} & 202.14.80.153 & 443.62    & 2.97      & Hong Kong \\ \hline
+    \texttt{19} & 143.89.14.2 & 448.84      & 5.21      & Hong Kong \\ \hline
     \end{tabular}
     \caption{Ruta Universidad de Hong Kong de Ciencia y Tecnologia (www.ust.hk  - IP 143.89.14.2)}
 \end{center}
