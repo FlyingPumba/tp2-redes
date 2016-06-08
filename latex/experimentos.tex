@@ -326,11 +326,15 @@ Además pudimos verificar (manualmente a través de IP2Location) que hubieron va
 \item Brazil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
 \item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
 \end{itemize}
-Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11).
 
-Con respecto a las anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
+Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11). Sin embargo existe claramente
+una anomalía de False Link en los de Italia, ya que la diferencia de RTTs que hay entre estas y las de Argentina son demasiado pequeñas. Esto podría deberse
+a que los servidores a los que pertenecen están hosteados en Italia, aunque se ubiquen físicamente en otro lugar(posiblemente Brazil). Entonces solo existe
+un salto continental y es el que detecto nuestra herramienta.
+
+Con respecto a las otras anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
 
 \begin{itemize}
 \item \texttt{False RTTs}: entre los hops 3 y 4, 4 y 5, 14 y 15, 15 y 16. Esto se puede deber a rutas asimétricas que hacen que la diferencia entre los RTTs de hops sucesivos sea negativa porque en el segundo hop, el traceroute vuelve por una ruta más rápida.
-\item \texttt{IP repetida}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
+\item \textit{Loop/Cycle}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
 \end{itemize}
