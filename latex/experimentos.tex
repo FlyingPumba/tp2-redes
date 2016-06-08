@@ -86,19 +86,20 @@ En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Gran Breta
 ni ciudad) mientras que 17 pertenece a Oxford. En este caso es más probable que se trate de un caso aislado
 ya que no existe un salto continental, solamente regional.\\
 
-Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233.
-Sin embargo esto es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos(Aunque la primera no puede estar ubicada
-en ese lugar por razones que explicaremos más adelante). El salto continental se produce entre 6 y 9, aunque
-si vemos el gráfico de RRTs podemos apreciar que la diferencia no es muy grande.\\
-
 También podemos observar la anomalía de False Link en los hops 4 y 5 ya que muestran como ubicación a Estados Unidos
 , sin embargo los RTT de ambos no corresponden con la distancia que tuvieron que recorrer entre 3 y 4. El número 6
 posee un RTT más propio del primero ubicado en Estados Unidos. Una posible explicación para esta anomalía es que
 los servidores intermedios entre Argentina y Estados Unidos(posiblemente ubicados en Brasil) pertenecen a una
 compañía estadounidense y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación. Es posible
 que el hops 6 también sufra de esta anomalía ya que usando herramientas alternativas de geolocalización de IP nos dio
-de resultado Netherlands. Aunque creemos que es poco probable porque el RTT que existe entre Londres y este sería demasiado
-grande.
+de resultado Netherlands. Creemos que esta es la más acertada ya que el salto continental que habría entre
+Estados Unidos y Londres sería demasiado rápido. Sin embargo, el salto que separa a Netherlands de
+Londres es demasiado grande, por lo tanto no podemos estar seguros.\\
+
+Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233.
+Sin embargo esto es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos. Aunque creemos que
+el salto mostrado es correcto ya que, como mencionamos antes, el hops 6 debe ser de Netherlands en
+vez de Estados Unidos.
 
 \newpage
 
