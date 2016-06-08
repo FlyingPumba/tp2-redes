@@ -282,7 +282,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{5} &  195.22.220.213 & 11.73    & -2.11     & Buenos Aires \\ \hline
     \texttt{6} &  195.22.219.3 & 38.76      & 27.02     & Italia \\ \hline
     \texttt{7} &  195.22.219.3 & 38.63      & -0.13     & Italia \\ \hline
-    \texttt{8} &  149.3.181.65 & 87.87      & 49.24     & Brazil \\ \hline
+    \texttt{8} &  149.3.181.65 & 87.87      & 49.24     & Brasil \\ \hline
     \texttt{9} &  129.250.2.227 & 208.21    & 120.33    & Nueva York, US \\ \hline
     \texttt{10} & 129.250.4.13 & 281.09     & 72.87     & Washington, US \\ \hline
     \texttt{11} & 129.250.2.38 & 422.20     & 141.11    & Tokyo, Japón \\ \hline
@@ -319,22 +319,23 @@ A continuación graficamos los \texttt{RTT} en función de los hops para analiza
 
 Como podemos ver, a gran escala los \texttt{Round Trip Times} parecen obedecer nuestra suposición de que iba a escalar fuertemente a medida que nos acercamos al destino. La cantidad de hops en total fue 19, algo bastante grande y lógico dada la distancia entre el origen (Argentina) y el destino (Hong Kong).
 
-La aplicación de geolocalización utilizada en este caso, ip2location.com, estipula varios saltos continentales, siendo los mismos:
-\begin{itemize}
-\item Argentina (Sudamerica) - Italia (Europa) entre hops 5 y 6.
-\item Italia (Europa) - Brazil (Sudamerica) entre hops 7 y 8.
-\item Brazil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
-\item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
-\end{itemize}
-
-Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11). Sin embargo existe claramente
-una anomalía de False Link en los de Italia, ya que la diferencia de RTTs que hay entre estas y las de Argentina son demasiado pequeñas. Esto podría deberse
-a que los servidores a los que pertenecen están hosteados en Italia, aunque se ubiquen físicamente en otro lugar(posiblemente Brazil). Entonces solo existe
-un salto continental y es el que detecto nuestra herramienta.
-
 Con respecto a las otras anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
 
 \begin{itemize}
 \item \texttt{False RTTs}: entre los hops 3 y 4, 4 y 5, 14 y 15, 15 y 16. Esto se puede deber a rutas asimétricas que hacen que la diferencia entre los RTTs de hops sucesivos sea negativa porque en el segundo hop, el traceroute vuelve por una ruta más rápida.
 \item \textit{Loop/Cycle}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
 \end{itemize}
+
+Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 10 y 11 ($\Delta RTT = 141.11$). El siguiente candidato es el enlace entre los hops 8 y 9 ($\Delta RTT = 120.33$). El último candidato detectado es el enlace entre los hops 9 y 10 ($\Delta RTT = 72.87$).
+
+Por otro lado, la aplicación de geolocalización utilizada en este caso, ip2location.com, estipula varios saltos continentales, siendo los mismos:
+\begin{itemize}
+\item Argentina (Sudamerica) - Italia (Europa) entre hops 5 y 6.
+\item Italia (Europa) - Brasil (Sudamerica) entre hops 7 y 8.
+\item Brasil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
+\item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
+\end{itemize}
+
+Vemos una correspondencia entre los primeros dos candidatos que predice nuestra herramienta y el resultado de la aplicación de geolocalizacion. Es decir tanto el enlace entre los hops 10 y 11 como el enlace entre los hops 8 y 9 correponden a enlaces intercontinentales, (Estados Unidos-Japón y Brasil - Estados Unidos respectivamente). Por otro lado el enlace entre los hops 9 y 10 sería un falso positivo según la ubicación dada por la aplicación de geolocalización, ya que este correpondería a una conexión entre dos ciudades de Estados Unidos, en particular especulamos que el mismo debe ser un enlace que une la costa este con la costa oeste de este país.
+
+Queda por analizar la supuesta presencia de dos falsos negativos, los enlaces entre los hops 5 y 6 y los hops 7 y 8, que, según la aplicación de geolocalización, corresponden a enlaces entre Argentina e Italia e Italia y Brasil respectivamente. Sin embargo los valores de \texttt{RTT} de los hops 6 y 7, (ambos hops correponden al mismo host), nos inducen a pensar que este host no esta ubicado en Italia. Hipotesis que se encuentra reforzado por el hecho que la dirección de IP corresponden al ISP ``AS6762 TELECOM ITALIA SPARKLE S.p.A.'', organización que opera tanto en Argentina como en Italia.
