@@ -2,16 +2,16 @@ En esta sección desarrollaremos y mostraremos los resultados de los experimento
 universidades:
 
 \begin{itemize}
-\item Universidad de Oxford(Reino Unido)
-\item Universidad de Sydney (Australia)
-\item Universidad de Ghana (Africa)
-\item Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)
+\item Universidad de Oxford (Reino Unido, Europa)
+\item Universidad de Sydney (Australia, Oceania)
+\item Universidad de Ghana (Ghana, Africa)
+\item Universidad de Hong Kong de Ciencia y Tecnologia (China, Asia)
 \end{itemize}
 
-Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
+Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceos de carga de los routers.
 
 Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala\cite{Cimbala}. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
-A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
+A partir de este cálculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
@@ -22,7 +22,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ipinfo.io)} \\ \hline
     \texttt{1} & 192.168.0.1      &1.61       & -       & IP privada   \\ \hline
     \texttt{2} & 10.27.128.1      &9.35       & 7,74       & IP privada  \\ \hline
     \texttt{3} & 10.242.1.61      & 10.83     & 1,48       & IP privada  \\ \hline
@@ -111,7 +111,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ipinfo.io)} \\ \hline
     \texttt{1} & 192.168.0.1      & 1.38    & -       & IP privada  \\ \hline
     \texttt{2} & *                & -       & -       & -   \\ \hline
     \texttt{3} & *                & -       & -       & -   \\ \hline
@@ -177,7 +177,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ipinfo.io)} \\ \hline
     \texttt{1}  & 10.27.64.1      & 14.23             & -                     & IP privada                     \\ \hline
     \texttt{2}  & 10.242.1.149    & 11.58             & -2.65                 & IP privada                     \\ \hline
     \texttt{3}  & 195.22.220.33   & 13.38             & 1.8                   & Italia                         \\ \hline
@@ -274,7 +274,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[H]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (IP2Location)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicación (ip2location.com)} \\ \hline
     \texttt{1} &  192.168.1.1 & 0.36        &  -        & Local \\ \hline
     \texttt{2} &  200.3.60.192 & 12.24      & 11.88     & Buenos Aires \\ \hline
     \texttt{3} &  181.88.108.18 & 16.01     & 3.77      & Buenos Aires \\ \hline
