@@ -5,6 +5,7 @@ universidades:
 \item Universidad de Oxford(Reino Unido)
 \item Universidad de Sydney (Australia)
 \item Universidad de Ghana (Africa)
+\item Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)
 \end{itemize}
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
@@ -55,7 +56,7 @@ A continuación graficamos los \texttt{RTT} en función de los hops para analiza
                 width=15cm,
                 ymin = 0,
                 ylabel={RTT},
-                xlabel={Hop number}208.178.195.213
+                xlabel={Hop number}
             ]
             \addplot table[x=hop,y=rtt]{data/oxford.dat};
         \end{axis}
