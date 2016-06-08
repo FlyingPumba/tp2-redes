@@ -1,17 +1,13 @@
 ### Dependencias
 * `sudo pip install scapy`
-* `sudo apt-get install python-pygraphviz`
-* `sudo pip install networkx`
+* `sudo pip install scipy`
 
-### Capturar paquetes
-Para hacer una captura de paquetes, ejecutar: `sudo ./capture.py <interface> <segundos>`.
-El archivo se guarda como "captura.pcap"
+### Traceroute normal
+Para hacer un traceroute similar al que viene por defecto en Ubuntu, ejecutar `sudo ./traceroute.py <IP>`
 
-### Procesar capturas
-Para procesar una captura, ejecutar: `./process.py <archivo> <experimento>`.
-Donde `<experimento>` puede ser:
-* "exp-proto": Corre el experimento de protocolos distinguidos
-* "exp-nodos": Corre el experimento de nodos distinguidos
-
-### Graficar nodos
-Para generar una imagen con la topología de una red, ejecutar: `./graficar.py <archivo>`.
+### Traceroute debug
+Este modo se obtiene al ejecutar `sudo ./traceroute.py <IP> -d`, y se puede utilizar para obtener los mismos resultados que se utilizaron en el TP. Los pasos que realiza son:
+- 50 traceroutes
+- Calcular la ruta habitual
+- Calcular tiempos promedio de la ruta habitual
+- Obtener información de geolocalización para las IPs de la ruta habitual, utilizando la herramienta ipinfo.io

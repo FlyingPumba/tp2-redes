@@ -31,16 +31,16 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{6} & 67.17.99.233     & 137.77    & 126,97       & Estados Unidos    \\ \hline
     \texttt{7} & *                & -        & -       & -   \\ \hline
     \texttt{8} & *                & -        & -       & -   \\ \hline
-    \texttt{9} & 212.187.139.166  & 239.16    & -       & Gran Bretaña   \\ \hline
-    \texttt{10} & 146.97.33.2     & 238.03    & −1,13       & Gran Bretaña   \\ \hline
-    \texttt{11} & 146.97.37.194   & 238.17    & 0,14       & Gran Bretaña    \\ \hline
-    \texttt{12} & 193.63.108.94   & 245.87    & 7,7       &  Gran Bretaña \\ \hline
-    \texttt{13} & 193.63.108.98   & 238.36    & −7,51       & Gran Bretaña   \\ \hline
-    \texttt{14} & 193.63.109.90   & 248.00    & 9,64       & Gran Bretaña    \\ \hline
+    \texttt{9} & 212.187.139.166  & 239.16    & -       & Reino Unido   \\ \hline
+    \texttt{10} & 146.97.33.2     & 238.03    & −1,13       & Reino Unido   \\ \hline
+    \texttt{11} & 146.97.37.194   & 238.17    & 0,14       & Reino Unido    \\ \hline
+    \texttt{12} & 193.63.108.94   & 245.87    & 7,7       &  Reino Unido \\ \hline
+    \texttt{13} & 193.63.108.98   & 238.36    & −7,51       & Reino Unido   \\ \hline
+    \texttt{14} & 193.63.109.90   & 248.00    & 9,64       & Reino Unido    \\ \hline
     \texttt{15} & *               & -        & -       & -   \\ \hline
     \texttt{16} & *               & -        & -       & -    \\ \hline
-    \texttt{17} & 192.76.32.62    & 234.21    & -       & Oxford, Inglaterra, Gran Bretaña   \\ \hline
-    \texttt{18} & 129.67.242.154  & 241.62    & 7,41       & Oxfordshire, Gran Bretaña   \\ \hline
+    \texttt{17} & 192.76.32.62    & 234.21    & -       & Oxford, Inglaterra, Reino Unido   \\ \hline
+    \texttt{18} & 129.67.242.154  & 241.62    & 7,41       & Oxfordshire, Reino Unido   \\ \hline
     \end{tabular}
     \caption{Ruta Universidad de Oxford (ox.ac.uk - IP 129.67.242.154)}
 \end{center}\end{table}
@@ -66,41 +66,40 @@ A continuación graficamos los \texttt{RTT} en función de los hops para analiza
 Con este gráfico podemos claramente observar los saltos negativos y en los que no hubo respuesta(estos
 últimos los notamos con RTT -1).\\
 
-Daremos nuestras hipótesis sobre que casos son los que identificamos para False RTT.\\
+Daremos nuestras hipótesis sobre que casos son los que identificamos como anomalias False RTT.\\
 
 \begin{itemize}
-\item Entre 4 y 5. Asimétricos.
-\item Entre 9 y 10. Asimétrico.
-\item Entre 12 y 13. Asimétrico.
-\item Entre 14 y 17. Lo contamos porque 15 y 16 corresponden a hops perdidos. Es Asimétrico.
+\item El enlace entre los hops 4 y 5. Es asimétrico ya que la diferencia entre los RTTs de los hops mencionados y los anteriores es demasiado grande para ser causado por MPLS.
+\item El enlace entre los hops 9 y 10. Igual al caso anterior.
+\item El enlace entre los hops 12 y 13. Igual al caso anterior.
+\item El enlace entre los hops 14 y 17. Igual al caso anterios, con la particularidad de que los hops 15 y 16 son \textit{missing hops}.
 \end{itemize}
 
-Por otro lado, tenemos los que no tuvieron respuesta. En nuestro caso tenemos 7, 8, 15, 16.\\
+Los hops para los cuales no tuvimos respuesta fueron: 7, 8, 15, 16.\\
 
-El hops 6 pertenece a Estados Unidos pero el 9 pertenece a Gran Bretaña. Pensamos que a la hora de
-establecer el enlace continental se lo hace siempre primero con dos hops que nunca darán respuesta, también se
-pierden hops entre una IP de Estados Unidos y la de Gran Bretaña. Como hipótesis alternativa
-podríamos pensar que esto ocurre por culpa del enlace continental, ya sea por una cuestión de
-excesivo transito o por causas más puntuales sobre las configuraciones o protecciones de este.\\
+La herramienta de geolocalización nos dice que el hop 6 pertenece a Estados Unidos y el 9 pertenece a Reino Unido.
+Dado que el $\Delta RTT$ entre estos dos hops es significativamente grande, inferimos que hay entre ambos un salto intercontinental, aunque no hayamos obtenido respuesta de los hops 7 y 8.
 
-En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Gran Bretaña(sin ubicar region
-ni ciudad) mientras que 17 pertenece a Oxford. En este caso es más probable que se trate de un caso aislado
-ya que no existe un salto continental, solamente regional.\\
+Probando con la universidad de Cambridge (también en Reino Unido) obtuvimos un resultado similar: dos hops perdidos, lo cual nos sugiere que el enlace intercontinental entre Estado Unidos y Reino Unido tiende a caer en esta situación.
 
-También podemos observar la anomalía de False Link en los hops 4 y 5 ya que muestran como ubicación a Estados Unidos
-, sin embargo los RTT de ambos no corresponden con la distancia que tuvieron que recorrer entre 3 y 4. El número 6
+Como hipótesis alternativa podríamos pensar que esto ocurre por culpa del enlace intercontinental, ya sea por una cuestión de excesivo transito o por causas más puntuales sobre las configuraciones o protecciones de este.\\
+
+En el caso de los hops 15 y 16 ocurre algo parecido, puesto que el hop 14 parece pertencer al Reino Unido (sin ubicar region
+ni ciudad) mientras que el hop 17 pertenece a Oxford. En este caso es más probable que se trate de una situación aislada
+ya que no existe un salto intercontinental, solamente regional.\\
+
+También podemos observar que los hops 4 y 5 se muestran como ubicación a Estados Unidos, aunque los RTT de ambos no corresponden con la distancia que tuvieron que recorrer entre los hops 3 y 4. El hop 6
 posee un RTT más propio del primero ubicado en Estados Unidos. Una posible explicación para esta anomalía es que
 los servidores intermedios entre Argentina y Estados Unidos(posiblemente ubicados en Brasil) pertenecen a una
 compañía estadounidense y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación. Es posible
-que el hops 6 también sufra de esta anomalía ya que usando herramientas alternativas de geolocalización de IP nos dio
-de resultado Netherlands. Creemos que esta es la más acertada ya que el salto continental que habría entre
-Estados Unidos y Londres sería demasiado rápido. Sin embargo, el salto que separa a Netherlands de
-Londres es demasiado grande, por lo tanto no podemos estar seguros.\\
+que el hop 6 también sufra de este error de aproximación ya que usando herramientas alternativas de geolocalización de IP nos dio
+como resultado Holanda.
+Creemos que ésta ubicación es la más acertada ya que el salto intercontinental que habría entre
+Estados Unidos y Londres debería tener un $\Delta RTT$ bastante más grande. Sin embargo, el salto que separa a Holanda de
+Londres es demasiado grande, por lo tanto no terminamos de estar seguros.\\
 
-Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233.
-Sin embargo esto es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos. Aunque creemos que
-el salto mostrado es correcto ya que, como mencionamos antes, el hops 6 debe ser de Netherlands en
-vez de Estados Unidos.
+Además nuestra herramienta identifica como posible salto intercontinental al enlance entre las IPs 208.178.195.213 - 67.17.99.233 (hops 5 y 6).
+Sin embargo esto podría ser incorrecto ya que la aplicación de geolocalización nos dice que ambas IP pertenecen al dominio de Estados Unidos. Aunque, podemos concluir que el salto mostrado es efectivamente intercontinental ya que, como mencionamos antes, el hops 6 podría ser de Holanda en vez de Estados Unidos.
 
 \newpage
 
