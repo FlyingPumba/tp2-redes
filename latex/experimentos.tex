@@ -9,148 +9,97 @@ universidades:
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
 
-Para identificar los saltos intercontinentales calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = \frac{RTT_{i} - RTT_{i-1}}{RTT_{i-1}}\), donde $2 \leq i \leq$ cantidad de hops. Siendo los candidatos a saltos intercontinentales los pares de hops con $\Delta RTT$ mayor al resto. A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ref a geolookip o lo que sea}).
+Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
+A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
 
 \subsection{Universidad de Oxford}
 
-Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
-
+Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
-    \texttt{1} & 192.168.0.1      &     & -       & Prov. Buenos Aires, Argentina   \\ \hline
-    \texttt{2} & 10.27.128.1                & -       & -       & - IP privada  \\ \hline
-    \texttt{3} & 10.242.1.61                & -       & -       & - IP privada  \\ \hline
-    \texttt{4} & 208.178.195.214                & -       & -       & -   \\ \hline
-    \texttt{5} & 208.178.195.213                & -       & -       & -   \\ \hline
-    \texttt{6} & 67.17.99.233     & 14.06   & -       & Ciudad Buenos Aires, Argentina    \\ \hline
-    \texttt{7} & *   & 14.71    & 4.62   & Ciudad Buenos Aires,Argentina   \\ \hline
-    \texttt{8} & *    & 16.23    & 10.33  & Cordoba, Argentina   \\ \hline
-    \texttt{9} & 212.187.139.166     & 240.04  & 1378.99 & Texas, Estados Unidos   \\ \hline
-    \texttt{10} & 146.97.33.2               & -       & -       & -   \\ \hline
-    \texttt{11} & 146.97.37.194               & -       & -       & -    \\ \hline
-    \texttt{12} & 193.63.108.94     & 213.49  & -       & Nueva York, Estados Unidos   \\ \hline
-    \texttt{13} & 193.63.108.98   & 229.91  & 7.69    & Florida, Estados Unidos   \\ \hline
-    \texttt{14} & 193.63.109.90   & 271.08  & 17.91   & Texas, Estados Unidos   \\ \hline
-    \texttt{15} & *    & 269.29  & -0.66   & California, Estados Unidos   \\ \hline
-    \texttt{16} & *   & 273.33  & 1.50    & California, Estados Unidos    \\ \hline
-    \texttt{17} & 192.76.32.62   & 269.75  & -1.31   & California, Estados Unidos   \\ \hline
-    \texttt{18} & 129.67.242.154 & 371.34  & 37.66   & Canberra, Australia   \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion} \\ \hline
+    \texttt{1} & 192.168.0.1      &1.61       & -       & IP privada   \\ \hline
+    \texttt{2} & 10.27.128.1      &9.35       & 7,74       & IP privada  \\ \hline
+    \texttt{3} & 10.242.1.61      & 10.83     & 1,48       & IP privada  \\ \hline
+    \texttt{4} & 208.178.195.214  & 12.40     & 1,57       & Estados Unidos   \\ \hline
+    \texttt{5} & 208.178.195.213  & 10.80     & −1,6       & Estados Unidos   \\ \hline
+    \texttt{6} & 67.17.99.233     & 137.77    & 126,97       & Estados Unidos    \\ \hline
+    \texttt{7} & *                & -        & -       & -   \\ \hline
+    \texttt{8} & *                & -        & -       & -   \\ \hline
+    \texttt{9} & 212.187.139.166  & 239.16    & -       & Gran Bretaña   \\ \hline
+    \texttt{10} & 146.97.33.2     & 238.03    & −1,13       & Gran Bretaña   \\ \hline
+    \texttt{11} & 146.97.37.194   & 238.17    & 0,14       & Gran Bretaña    \\ \hline
+    \texttt{12} & 193.63.108.94   & 245.87    & 7,7       &  Gran Bretaña \\ \hline
+    \texttt{13} & 193.63.108.98   & 238.36    & −7,51       & Gran Bretaña   \\ \hline
+    \texttt{14} & 193.63.109.90   & 248.00    & 9,64       & Gran Bretaña    \\ \hline
+    \texttt{15} & *               & -        & -       & -   \\ \hline
+    \texttt{16} & *               & -        & -       & -    \\ \hline
+    \texttt{17} & 192.76.32.62    & 234.21    & -       & Oxford, Inglaterra, Gran Bretaña   \\ \hline
+    \texttt{18} & 129.67.242.154  & 241.62    & 7,41       & Oxfordshire, Gran Bretaña   \\ \hline
     \end{tabular}
-    \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
+    \caption{Ruta Universidad de Oxford (ox.ac.uk - IP 129.67.242.154)}
 \end{center}\end{table}
 
+Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
 
-
-
-\begin{tikzpicture}
-\begin{axis}[
-    ybar,
-    bar width=0.5cm, % Width of the bar
-    x=0.5cm, % Distance between the centers of the bars
-    enlarge x limits={abs=0.5cm}, % The distance between the center of the first bar and the left edge
-    enlarge y limits=false,
-    ymin=0,
-    xtick=data,
-    xlabel= {Hops},
-    ylabel= {RTTs},
-    symbolic x coords={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18},
-    point meta={y*100}, %y-Werte mal 100 für Prozent
-    axis lines*=left,
-    clip=false
-    ]
-\addplot [
-    draw=black,
-    fill=white,
-    error bars/.cd,
-        y dir=both,
-        y explicit
-    ] coordinates{(1,1.67)
-        (2,10.90)
-        (3,10.14)
-        (4,11.67)
-        (5,9.96)
-        (6,136.57)
-        (7,-1)
-        (8,-1)
-        (9,242.78)
-        (10,237.21)
-        (11,239.08)
-        (12,241.48)
-        (13,237.82)
-        (14,246.91)
-        (15,-1)
-        (16,-1)
-        (17,239.13)
-        (18,241.63)};
-\end{axis}
-\end{tikzpicture}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                ybar,
+                xtick=data,
+                width=15cm,
+                ymin = 0,
+                ylabel={RTT},
+                xlabel={Hop number}208.178.195.213
+            ]
+            \addplot table[x=hop,y=rtt]{data/oxford.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
 
 Con este gráfico podemos claramente observar los saltos negativos y en los que no hubo respuesta(estos
-últimos los notamos con RTT -1).
+últimos los notamos con RTT -1).\\
 
-Cuando los tiempos de ida y vuelta reportados por traceroute son falsas ocurre la esta anomalía, conocida
-como False Round-Trip Times . Generalmente hay dos razones, ya sean rutas de paquete asimétricos o enrutamiento
-MPLS. Cuando los respectivos caminos hacia y desde el destino son asimétricos, es decir, los paquetes se
-encaminan por senderos diferentes desde y hacia el objetivo, los tiempos de ida y vuelta pueden no
-reflejar el tiempo real que tarda un paquete para llegar al destino. El ida y vuelta resultantes muestran
-posteriormente los valores engañosos. La trayectoria real puede de hecho ser mucho más corto o más largo
-que el tiempo de ida y vuelta indica, dependiendo de la situación.
-
-MPLS es un caso similar al anterior y podría verse en que los tiempos de ida y vuelta casi equivalentes
-para varios saltos en el resultado de traceroute.
-
-Daremos nuestras hipótesis sobre que casos son los que identificamos.
+Daremos nuestras hipótesis sobre que casos son los que identificamos para False RTT.\\
 
 \begin{itemize}
-\item Entre 2 y 3. Claramente es paquetes asimétricos.
-\item Entre 4 y 5. Consideramos que también es asimétricos. Aunque podría ser MLPS ya que en 3 tenemos un
-RTT muy similar a 4.
+\item Entre 4 y 5. Asimétricos.
 \item Entre 9 y 10. Asimétrico.
-\item Entre 12 y 13.Asimétrico.
-%Tengo que identificar a 14 y 17.
+\item Entre 12 y 13. Asimétrico.
+\item Entre 14 y 17. Lo contamos porque 15 y 16 corresponden a hops perdidos. Es Asimétrico.
 \end{itemize}
 
+Por otro lado, tenemos los que no tuvieron respuesta. En nuestro caso tenemos 7, 8, 15, 16.\\
 
+El hops 6 pertenece a Estados Unidos pero el 9 pertenece a Gran Bretaña. Pensamos que a la hora de
+establecer el enlace continental se lo hace siempre primero con dos hops que nunca darán respuesta, también se
+pierden hops entre una IP de Estados Unidos y la de Gran Bretaña. Como hipótesis alternativa
+podríamos pensar que esto ocurre por culpa del enlace continental, ya sea por una cuestión de
+excesivo transito o por causas más puntuales sobre las configuraciones o protecciones de este.\\
 
-Por otro lado, tenemos los que no tuvieron respuesta. Esta anomalía es conocida como Missing Hops.
-Se produce en general cuando un router está protegido por un firewall o de configurado otro modo para no
-generar errores excesivos ICMP TTL. En nuestro caso tenemos 7, 8, 15, 16.
+En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Gran Bretaña(sin ubicar region
+ni ciudad) mientras que 17 pertenece a Oxford. En este caso es más probable que se trate de un caso aislado
+ya que no existe un salto continental, solamente regional.\\
 
-El hops 6 pertenece a Kansas, Estados Unidos pero el 9 pertenece a Reino Unido. Pensamos que a la hora de
-establecer el enlace continental se lo hizo primero con dos routers que estaban protegidos por firewall o
-configurados de otro modo. La tercera vez que intenta establecer el enlace a Reino Unido el hops le da
-respuesta, en este caso el 9. Probando con la universidad de Cambrige, también ubicada en Reino Unido, se
-obtiene que también se pierden hops entre una IP de Estados Unidos y la de Reino Unido. Como hipótesis
-alternativa podriamos pensar que esto ocurre por culpa del enlace continental.%Tengo que desarrollarlo mejor
+También podemos observar la anomalía de False Link en los hops 4 y 5 ya que muestran como ubicación a Estados Unidos
+, sin embargo los RTT de ambos no corresponden con la distancia que tuvieron que recorrer entre 3 y 4. El número 6
+posee un RTT más propio del primero ubicado en Estados Unidos. Una posible explicación para esta anomalía es que
+los servidores intermedios entre Argentina y Estados Unidos(posiblemente ubicados en Brasil) pertenecen a una
+compañía estadounidense y nuestra herramienta de ubicación utiliza este dato para aproximar su ubicación. Es posible
+que el hops 6 también sufra de esta anomalía ya que usando herramientas alternativas de geolocalización de IP nos dio
+de resultado Netherlands. Creemos que esta es la más acertada ya que el salto continental que habría entre
+Estados Unidos y Londres sería demasiado rápido. Sin embargo, el salto que separa a Netherlands de
+Londres es demasiado grande, por lo tanto no podemos estar seguros.\\
 
-En el caso de 15 y 16 ocurre algo parecido, puesto que 14 pertenece a Londres mientras que 17 pertenece a
-Oxford.
-
-Por último tenemos la geolocalización de los hops que forman la traza. Los mostraremos en el orden que
-aparecieron.
-
-%Me gustaría añadirlos como un camino en un mapa.
-\begin{itemize}
-\item 192.168.0.1, 10.27.128.1 y 10.242.1.61 no se pudieron identificar. Presuponemos que se tratan de IPs
-de Argentina.
-\item 208.178.195.214, 208.178.195.213 y 67.17.99.233. Pertenecen al dominio de Estados Unidos. Las dos
-primeras ubicadas en Michigan y la última en Kansas.
-\item Dos IPs que no dieron respuesta.
-\item 212.187.139.166, 146.97.33.2, 146.97.37.194, 193.63.108.94, 193.63.108.98 y 193.63.109.90 de
-Gran Bretaña, Reino Unido. Todas pertenecientes a Londres.
-\item Dos IPs que no dieron respuesta.
-\item 192.76.32.62 y 129.67.242.154 de Gran Bretaña, Reino Unido. Las dos pertenecientes a Oxford, suponemos
-la última como la de la Universidad.
-\end{itemize}
-
-Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233. Sin embargo esto
-es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos. El salto continental se produce entre
-6 y 9, aunque si vemos el gráfico de RRTs podemos apreciar que la diferencia no es muy grande.
+Además tenemos identificado un posible salto continental en 208.178.195.213 - 67.17.99.233.
+Sin embargo esto es incorrecto ya que ambas IP pertenecen al dominio de Estados Unidos. Aunque creemos que
+el salto mostrado es correcto ya que, como mencionamos antes, el hops 6 debe ser de Netherlands en
+vez de Estados Unidos.
 
 \newpage
 
@@ -161,29 +110,29 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (\%)} & \textbf{Ubicacion} \\ \hline
-    \texttt{1} & 192.168.0.1      & 1.38    & -       & Prov. Buenos Aires, Argentina   \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \texttt{1} & 192.168.0.1      & 1.38    & -       & IP privada  \\ \hline
     \texttt{2} & *                & -       & -       & -   \\ \hline
     \texttt{3} & *                & -       & -       & -   \\ \hline
     \texttt{4} & *                & -       & -       & -   \\ \hline
     \texttt{5} & *                & -       & -       & -   \\ \hline
-    \texttt{6} & 200.89.165.9     & 14.06   & -       & Ciudad Buenos Aires, Argentina    \\ \hline
-    \texttt{7} & 200.89.165.250   & 14.71    & 4.62   & Ciudad Buenos Aires,Argentina   \\ \hline
-    \texttt{8} & 190.216.88.33    & 16.23    & 10.33  & Cordoba, Argentina   \\ \hline
-    \texttt{9} & 67.17.94.249     & 240.04  & 1378.99 & Texas, Estados Unidos   \\ \hline
+    \texttt{6} & 200.89.165.9     & 14.06   & -       & Argentina    \\ \hline
+    \texttt{7} & 200.89.165.250   & 14.71    & 0.65   & Argentina   \\ \hline
+    \texttt{8} & 190.216.88.33    & 16.23    & 1.52  & Ciudad de Buenos Aires, Argentina   \\ \hline
+    \texttt{9} & 67.17.94.249     & 240.04  & 223.81 & Estados Unidos   \\ \hline
     \texttt{10} & *               & -       & -       & -   \\ \hline
     \texttt{11} & *               & -       & -       & -    \\ \hline
-    \texttt{12} & 4.68.127.54     & 213.49  & -       & Nueva York, Estados Unidos   \\ \hline
-    \texttt{13} & 129.250.4.250   & 229.91  & 7.69    & Florida, Estados Unidos   \\ \hline
-    \texttt{14} & 129.250.2.219   & 271.08  & 17.91   & Texas, Estados Unidos   \\ \hline
-    \texttt{15} & 129.250.7.69    & 269.29  & -0.66   & California, Estados Unidos   \\ \hline
-    \texttt{16} & 129.250.3.123   & 273.33  & 1.50    & California, Estados Unidos    \\ \hline
-    \texttt{17} & 204.1.253.166   & 269.75  & -1.31   & California, Estados Unidos   \\ \hline
-    \texttt{18} & 202.158.194.172 & 371.34  & 37.66   & Canberra, Australia   \\ \hline
-    \texttt{19} & 113.197.15.68   & 377.51  & 1.66    & Canberra, Australia   \\ \hline
-    \texttt{20} & 113.197.15.66   & 377.32  & -0.05   & Canberra, Australia   \\ \hline
-    \texttt{21} & 113.197.15.152  & 418.35  & 10.87   & Canberra, Australia    \\ \hline
-    \texttt{22} & 138.44.5.47     & 371.39  & -11.23  & Banks, Australia   \\ \hline
+    \texttt{12} & 4.68.127.54     & 213.49  & -       & Estados Unidos   \\ \hline
+    \texttt{13} & 129.250.4.250   & 229.91  & 16.48    & Colorado, Estados Unidos   \\ \hline
+    \texttt{14} & 129.250.2.219   & 271.08  & 41.17   & Colorado, Estados Unidos   \\ \hline
+    \texttt{15} & 129.250.7.69    & 269.29  & -1.79   & Colorado, Estados Unidos   \\ \hline
+    \texttt{16} & 129.250.3.123   & 273.33  & 4.04    & Colorado, Estados Unidos    \\ \hline
+    \texttt{17} & 204.1.253.166   & 269.75  & -3.58   & Colorado, Estados Unidos   \\ \hline
+    \texttt{18} & 202.158.194.172 & 371.34  & 101.59   & Canberra, Australia   \\ \hline
+    \texttt{19} & 113.197.15.68   & 377.51  & 6.17    & Canberra, Australia   \\ \hline
+    \texttt{20} & 113.197.15.66   & 377.32  & -0.19   & Canberra, Australia   \\ \hline
+    \texttt{21} & 113.197.15.152  & 418.35  & 41.03   & Canberra, Australia    \\ \hline
+    \texttt{22} & 138.44.5.47     & 391.39  & -26.96  & Victoria, Australia   \\ \hline
     \texttt{23} & *               & -       & -       & -                \\ \hline
     \texttt{24} & *               & -       & -       & -   \\ \hline
     \texttt{25} & 129.78.5.8      & 446.28  & -       & Sydney, Australia   \\ \hline
@@ -191,6 +140,34 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
+Graficamos los RTT en un histograma para lograr una mayor claridad en los cambios en los tiempos entre los hops:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                ybar,
+                xtick=data,
+                width=15cm,
+                ymin = 0,
+                ylabel={RTT},
+                xlabel={Hop number}
+            ]
+            \addplot table[x=hop,y=rtt]{data/sidney.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+A continuación enumeramos las anomalías encontradas:
+\begin{itemize}
+    \item \textit{Missing hops}: de los hops 2, 3, 4, 5, 10, 11, 23 y 24 no obtuvimos respuesta.
+    \item \textit{False RTT por rutas asimétricas}: entre los hops 14-15, 16-17, 19-20, 21-22 obtuvimos valores negativos en el $\Delta RTT$, valores no consistentes. En particular el caso de los hops 21-22 es el más significativo, especulamos que en este caso la ruta de vuelta de los paquetes difiere considerablemente con respecto a la ida. Por otro lado entre los hops 9-12 también encontramos una inconsistencia considerable entre los valores de \texttt{RTT} de ambos hosts, independientemente de que no sean hosts consecutivos. Nuevamente especulamos con rutas de ida y vuelta que difieren significativamente.
+    \item \textit{False RTT por MPLS routing}: la cercanía de los valores de \texttt{RTT} de los hops 14, 15, 16 y 17 y, por otro lado, los hops 18, 19 y 20, nos inducen a pensar que estos valores pueden caer dentro de la descripción de esta anomalía.
+\end{itemize}
+
+Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$). El otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$).
+
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
 
 \subsection{Universidad de Ghana}
 
@@ -199,7 +176,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
     \texttt{1}  & 10.27.64.1      & 14.23             & -                     & IP privada                     \\ \hline
     \texttt{2}  & 10.242.1.149    & 11.58             & -2.65                 & IP privada                     \\ \hline
     \texttt{3}  & 195.22.220.33   & 13.38             & 1.8                   & Italia                         \\ \hline
@@ -238,12 +215,14 @@ Mirando a las ubicaciones que devuelve la herramienta de geolocalización encont
   \item SEGUIR
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
                 ybar,
                 xtick=data,
+                width=15cm,
+                ymin = 0,
                 ylabel={RTT},
                 xlabel={Hop number}
             ]
@@ -251,3 +230,74 @@ Mirando a las ubicaciones que devuelve la herramienta de geolocalización encont
         \end{axis}
     \end{tikzpicture}
 \end{figure}
+
+
+\subsection{Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)}
+
+En este caso buscamos analizar los resultados de traceroute a una universidad de Hong Kong. Dada su ubicación en Asia, esperamos un gran aumento del RTT a medida que nos acercamos al destino, asi como una gran cantidad de Hops y uno o varios saltos continentales.
+
+Los resultados de este experimento pueden resumirse en el siguiente cuadro:
+
+\begin{table}[ht]\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (IP2Location)} \\ \hline
+    \texttt{1} &  192.168.1.1 & 0.36        &  -        & Local \\ \hline
+    \texttt{2} &  200.3.60.192 & 12.24      & 11.88     & Buenos Aires \\ \hline
+    \texttt{3} &  181.88.108.18 & 16.01     & 3.77      & Buenos Aires \\ \hline
+    \texttt{4} &  190.225.252.166 & 13.85   & -2.16     & Buenos Aires \\ \hline
+    \texttt{5} &  195.22.220.213 & 11.73    & -2.11     & Buenos Aires \\ \hline
+    \texttt{6} &  195.22.219.3 & 38.76      & 27.02     & Italia \\ \hline
+    \texttt{7} &  195.22.219.3 & 38.63      & -0.13     & Italia \\ \hline
+    \texttt{8} &  149.3.181.65 & 87.87      & 49.24     & Brazil \\ \hline
+    \texttt{9} &  129.250.2.227 & 208.21    & 120.33    & Nueva York, US \\ \hline
+    \texttt{10} & 129.250.4.13 & 281.09     & 72.87     & Washington, US \\ \hline
+    \texttt{11} & 129.250.2.38 & 422.20     & 141.11    & Tokyo, Japón \\ \hline
+    \texttt{12} & 129.250.5.134 & 429.55    & 7.34      & Hong Kong \\ \hline
+    \texttt{13} & 129.250.6.115 & 432.51    & 2.96      & Hong Kong \\ \hline
+    \texttt{14} & 203.131.246.154 & 452.04  & 19.52     & Hong Kong \\ \hline
+    \texttt{15} & 115.160.187.110 & 444.46  & -7.57     & Hong Kong \\ \hline
+    \texttt{16} & 202.130.98.102 & 440.41   & -4.05     & Hong Kong \\ \hline
+    \texttt{17} & 203.188.117.130 & 440.65  & 0.24      & Hong Kong \\ \hline
+    \texttt{18} & 202.14.80.153 & 443.62    & 2.97      & Hong Kong \\ \hline
+    \texttt{19} & 143.89.14.2 & 448.84      & 5.21      & Hong Kong \\ \hline
+    \end{tabular}
+    \caption{Ruta Universidad de Hong Kong de Ciencia y Tecnologia (www.ust.hk  - IP 143.89.14.2)}
+\end{center}
+\end{table}
+
+Adicionalmente graficamos los \texttt{Round Trip Times} en función de los hops para analizar más facilmente las anomalías detectadas.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                ybar,
+                xtick=data,
+                width=15cm,
+                ymin = 0,
+                ylabel={RTT},
+                xlabel={Hop number}
+            ]
+            \addplot table[x=hop,y=rtt]{data/hongkong.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+Como podemos ver, a gran escala los \texttt{Round Trip Times} parecen obedecer nuestra suposición de que iba a escalar fuertemente a medida que nos acercamos al destino. La cantidad de hops en total fue 19, algo bastante grande y lógico dada la distancia entre el origen (Argentina) y el destino (Hong Kong).
+
+Además pudimos verificar (manualmente a través de IP2Location) que hubieron varios saltos continentales:
+\begin{itemize}
+\item Argentina (Sudamerica) - Italia (Europa) entre hops 5 y 6.
+\item Italia (Europa) - Brazil (Sudamerica) entre hops 7 y 8.
+\item Brazil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
+\item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
+\end{itemize}
+Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11).
+
+Con respecto a las anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
+
+\begin{itemize}
+\item \texttt{False RTTs}: entre los hops 3 y 4, 4 y 5, 14 y 15, 15 y 16. Esto se puede deber a rutas asimétricas que hacen que la diferencia entre los RTTs de hops sucesivos sea negativa porque en el segundo hop, el traceroute vuelve por una ruta más rápida.
+\item \texttt{IP repetida}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
+\end{itemize}
