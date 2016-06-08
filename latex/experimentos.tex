@@ -9,7 +9,7 @@ universidades:
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
 
-Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
+Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala\cite{Cimbala}. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
 A partir de este calculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
@@ -21,7 +21,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion} \\ \hline
+    \textbf{Hop \#} & \textbf{IP}& \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
     \texttt{1} & 192.168.0.1      &1.61       & -       & IP privada   \\ \hline
     \texttt{2} & 10.27.128.1      &9.35       & 7,74       & IP privada  \\ \hline
     \texttt{3} & 10.242.1.61      & 10.83     & 1,48       & IP privada  \\ \hline
@@ -55,7 +55,7 @@ Una vez mandados los paquetes y realizados los promedios, procederemos a grafica
                 width=15cm,
                 ymin = 0,
                 ylabel={RTT},
-                xlabel={Hop number}208.178.195.213
+                xlabel={Hop number}
             ]
             \addplot table[x=hop,y=rtt]{data/oxford.dat};
         \end{axis}
@@ -167,7 +167,7 @@ A continuación enumeramos las anomalías encontradas:
 
 Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$). El otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$).
 
-Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geoubicación, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, por lo cual estamos en presencia de un falso positivo. Este falso positivo es producto de la gran distancia entre ambos países. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geolocalizacion, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, pero si es un enlace submarino. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
 
 \subsection{Universidad de Ghana}
 
