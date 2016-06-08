@@ -5,6 +5,7 @@ universidades:
 \item Universidad de Oxford(Reino Unido)
 \item Universidad de Sydney (Australia)
 \item Universidad de Ghana (Africa)
+\item Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)
 \end{itemize}
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceaos de carga de los routers.
@@ -44,7 +45,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Oxford (ox.ac.uk - IP 129.67.242.154)}
 \end{center}\end{table}
 
-Una vez mandados los paquetes y realizados los promedios, procederemos a graficar los tiempos resultantes.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -140,7 +141,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
-Graficamos los RTT en un histograma para lograr una mayor claridad en los cambios en los tiempos entre los hops:
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -176,34 +177,30 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \begin{table}[ht]\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion}             \\ \hline
-    \texttt{1}  & 10.27.64.1      & 14.23             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
-    \texttt{2}  & 10.242.1.149    & 11.58             & -                          & Prov. Buenos Aires, Argentina  \\ \hline
-    \texttt{3}  & 195.22.220.33   & 13.38             & -                          & Italia                         \\ \hline
-    \texttt{4}  & 195.22.220.32   & 11.97             & -                          & Italia                         \\ \hline
-    \texttt{5}  & 195.22.206.92   & 172.40            & -                          & Italia                         \\ \hline
-    \texttt{6}  & 195.22.206.92   & 172.13            & -                          & Italia                         \\ \hline
-    \texttt{7}  & 216.6.87.202    & 164.11            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{8}  & 216.6.87.169    & 255.53            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{9}  & 216.6.57.1      & 253.17            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{10} & 66.198.70.174   & 230.14            & -                          & Delaware, Estados Unidos       \\ \hline
-    \texttt{11} & 80.231.76.121   & 253.52            & -                          & Reino Unido, Europa            \\ \hline
-    \texttt{12} & 195.219.195.238 & 325.31            & -                          & Reino Unido, Europa            \\ \hline
-    \texttt{13} & 41.21.232.70    & 324.90            & -                          & Sudafrica                      \\ \hline
-    \texttt{14} & 41.204.60.149   & 327.05            & -                          & Ghana                          \\ \hline
-    \texttt{15} & 41.204.60.150   & 327.73            & -                          & Ghana                          \\ \hline
-    \texttt{16} & 197.255.127.2   & 328.85            & -                          & Ghana                          \\ \hline
-    \texttt{17} & 197.255.125.10  & 331.42            & -                          & Ghana                          \\ \hline
+    \textbf{Hop \#} & \textbf{IP} & \textbf{RTT (ms)} & \textbf{$\Delta$ RTT (ms)} & \textbf{Ubicacion (ipinfo.io)} \\ \hline
+    \texttt{1}  & 10.27.64.1      & 14.23             & -                     & IP privada                     \\ \hline
+    \texttt{2}  & 10.242.1.149    & 11.58             & -2.65                 & IP privada                     \\ \hline
+    \texttt{3}  & 195.22.220.33   & 13.38             & 1.8                   & Italia                         \\ \hline
+    \texttt{4}  & 195.22.220.32   & 11.97             & -1.41                 & Italia                         \\ \hline
+    \texttt{5}  & 195.22.206.92   & 172.40            & 160.43                & Italia                         \\ \hline
+    \texttt{6}  & 195.22.206.92   & 172.13            & 0.27                  & Italia                         \\ \hline
+    \texttt{7}  & 216.6.87.202    & 164.11            & -8.02                 & Delaware, Estados Unidos       \\ \hline
+    \texttt{8}  & 216.6.87.169    & 255.53            & 91.42                 & Delaware, Estados Unidos       \\ \hline
+    \texttt{9}  & 216.6.57.1      & 253.17            & -2.36                 & Delaware, Estados Unidos       \\ \hline
+    \texttt{10} & 66.198.70.174   & 230.14            & -23.03                & Delaware, Estados Unidos       \\ \hline
+    \texttt{11} & 80.231.76.121   & 253.52            & 23.38                 & Europa                         \\ \hline
+    \texttt{12} & 195.219.195.238 & 325.31            & 71.79                 & Europa                         \\ \hline
+    \texttt{13} & 41.21.232.70    & 324.90            & -0.41                 & Sudafrica                      \\ \hline
+    \texttt{14} & 41.204.60.149   & 327.05            & 2.15                  & Ghana                          \\ \hline
+    \texttt{15} & 41.204.60.150   & 327.73            & 0.68                  & Ghana                          \\ \hline
+    \texttt{16} & 197.255.127.2   & 328.85            & 1.12                  & Ghana                          \\ \hline
+    \texttt{17} & 197.255.125.10  & 331.42            & 2.57                  & Ghana                          \\ \hline
     \end{tabular}
     \caption{Ruta Universidad de Ghana (ug.edu.gh  - IP 197.255.125.10)}
 \end{center}
 \end{table}
 
-A continuación analizamos la anomalias encontradas:
-
-% \begin{itemize}
-%   \
-% \end{itemize}
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -220,6 +217,52 @@ A continuación analizamos la anomalias encontradas:
         \end{axis}
     \end{tikzpicture}
 \end{figure}
+
+En primer lugar es interesante notar que los primeros dos hops muestran IPs privadas. Aunque no encontramos una explicación clara, podemos especular que estas corresponden a dos routers de un mismo proveedor de internet, quien les asignó IPs privadas para ahorrar IPs públicas.
+
+Pasamos a analizar las anomalias encontradas:
+
+\begin{itemize}
+  \item \textit{Loop/Cycle}: en los hops 5 y 6, que tienen la misma IP. Esto podría suceder por diversas razones:
+      \begin{itemize}
+        \item Debido a que el hop 5 fowardea paquetes con TTL 0.
+        \item Un ciclo que termina en la IP en cuestion, y que no deja ver cual es la IP verdadera del hop 5.
+      \end{itemize}
+  \item \textit{False RTT por rutas asimetricas}: en los hops 2, 4, 10 y 13 por tener incremento negativo en los saltos. El único salto de estos que podría llegar a ser debido a MPLS es el del hop 13 ($\Delta RTT = -0.41$), pero no fue posible confirmarlo.
+\end{itemize}
+
+Mostramos ahora los enlaces candidatos a salto continental que arroja nuestra herramienta, contrastandolos con las ubicaciones arrojadas por la aplicación de geolocalización:
+
+\begin{enumerate}
+  \item Enlace entre los hops 4 y 5 ($\Delta RTT = 160.43$): Por la diferencias entre RTTs es claro que este enlace es un salto continental. Sin embargo, la aplicación de geolocalización nos dice que las IPs de los hops 3, 4, 5 y 6 corresponden a Italia, por lo que entonces estaríamos en un caso de falso positivo.
+
+    Pero, dado que los $\Delta RTT$ entre los hops 3 y 4, y 5 y 6 son chicos, y que todas estas IPs tienen asociada la organización ``AS6762 TELECOM ITALIA SPARKLE S.p.A.'', concluimos que:
+
+    \begin{itemize}
+      \item Los hops 3 y 4 corresponden en realidad a routers en Argentina, con IPs asignadas a Italia.
+      \item Los hops 5 y 6 corresponden efectivamente a routers en Italia, con IPs asignadas a Italia.
+      \item El enlace entre los hops 4 y 5 es efectivamente un salto continental.
+    \end{itemize}
+
+  \item Enlace entre los hops 7 y 8 ($\Delta RTT = 91.42$): Por la diferencias entre RTTs es claro que este enlace es un salto continental. Sin embargo, la aplicación de geolocalización nos dice que las IPs de los hops 7 y 8 corresponden a Estados Unidos, por lo que entonces estaríamos en un caso de falso positivo.
+
+  Pero, dado que el $\Delta RTT$ entre los hops 6 y 7 es chico, y el hop 6 corresponde a Italia, podemos concluir que:
+  \begin{itemize}
+    \item El hop 7 corresponde en realidad a un router en Italia, con IP asignada a Estados Unidos.
+    \item El enlace entre los hops 7 y 8 es efectivamente un salto continental.
+  \end{itemize}
+
+  \item Enlace entre los hops 11 y 12 ($\Delta RTT = 71.79$): Las diferencias entre RTTs nos inducen a pensar que este enlace es un salto continental, aunque la aplicación de geolocalización no nos provee información acerca de la posible ubicación de estas IPs.
+
+    Sin embargo, debido a que el hop 10 corresponde a Estados Unidos, y el 13 a Sudafrica concluimos que el enlace es efectivamente un salto continental, y que el hop 11 corresponde un router en Estados Unidos y el hop 12 a un router en Sudafrica.
+  \item Enlace entre los hops 10 y 11 ($\Delta RTT = 23.38$): en base a lo concluido para el enlace entre los hops 11 y 12, este caso sería un falso positivo.
+  \item Enlace entre los hops 9 y 10 ($\Delta RTT = -23.03$): este enlace parecería ser un falso positivo, por varias razones:
+      \begin{itemize}
+        \item La aplicación de geolocalización informa que ambas IPs están asignadas a Delaware, Estados Unidos.
+        \item El salto es negativo, lo cual podría implicar un congestionamiento en algún router.
+      \end{itemize}
+  \item Enlace entre los hops 6 y 7 ($\Delta RTT = -8.02$): en base a lo concluido para el enlace entre los hops 7 y 8, este caso sería un falso positivo.
+\end{enumerate}
 
 
 \subsection{Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)}
@@ -256,7 +299,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \end{center}
 \end{table}
 
-Adicionalmente graficamos los \texttt{Round Trip Times} en función de los hops para analizar más facilmente las anomalías detectadas.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -283,11 +326,15 @@ Además pudimos verificar (manualmente a través de IP2Location) que hubieron va
 \item Brazil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
 \item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
 \end{itemize}
-Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11).
 
-Con respecto a las anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
+Nuestra propia herramienta para predecir saltos continentales detecto el salto entre Estados Unidos y Hong Kong (hops 10 a 11). Sin embargo existe claramente
+una anomalía de False Link en los de Italia, ya que la diferencia de RTTs que hay entre estas y las de Argentina son demasiado pequeñas. Esto podría deberse
+a que los servidores a los que pertenecen están hosteados en Italia, aunque se ubiquen físicamente en otro lugar(posiblemente Brazil). Entonces solo existe
+un salto continental y es el que detecto nuestra herramienta.
+
+Con respecto a las otras anomalías, nos sorprendió no detectar Missing Hops en ningún momento. Entre los hops 1 a 3, 11 a 13 y 16 a 19, los RTTs incrementaron gradualmente. Sin embargo tenemos las siguientes anomalías:
 
 \begin{itemize}
 \item \texttt{False RTTs}: entre los hops 3 y 4, 4 y 5, 14 y 15, 15 y 16. Esto se puede deber a rutas asimétricas que hacen que la diferencia entre los RTTs de hops sucesivos sea negativa porque en el segundo hop, el traceroute vuelve por una ruta más rápida.
-\item \texttt{IP repetida}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
+\item \textit{Loop/Cycle}: entre los hops 6 y 7, esto se puede deber a que hay un ciclo en la topología y cuando el TTL es 7, el traceroute toma una ruta para llegar al mismo router que con TTL 6 que pasa por un router más que cuando el RTT es 6 pero llegan al mismo router porque hay un ciclo donde una ruta es más grande que la otra.
 \end{itemize}
