@@ -3,14 +3,14 @@ universidades:
 
 \begin{itemize}
 \item Universidad de Oxford (Reino Unido, Europa)
-\item Universidad de Sydney (Australia, Oceania)
-\item Universidad de Ghana (Ghana, Africa)
-\item Universidad de Hong Kong de Ciencia y Tecnologia (China, Asia)
+\item Universidad de Sydney (Australia, Oceanía)
+\item Universidad de Ghana (Ghana, África)
+\item Universidad de Hong Kong de Ciencia y Tecnología (China, Asia)
 \end{itemize}
 
 Para llevar adelante los experimentos utilizamos la herramienta descripta en la introducción. La cantidad de veces que ejecutamos nuestra versión de \texttt{traceroute} para cada universidad fue de \textbf{50}. Con esa cantidad lo que buscamos  es minimizar las oscilaciones en las rutas y tiempos fruto de balanceos de carga de los routers.
 
-Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la tecnica de estimacion de ouliers propuesta por Cimbala\cite{Cimbala}. Los outliers detectados por la tecnica seran nuestros candidatos a enlaces intercontinentales.
+Para identificar los saltos intercontinentales, primero calculamos la variación en los \texttt{RTT} entre cada par de hops consecutivos, $\Delta RTT_{i}$, de la siguiente manera: \(\Delta RTT_{i} = RTT_{i} - RTT_{i-1}\), donde $2 \leq i \leq$ cantidad de hops. Luego tomamos estos $\Delta RTT$ como input para la técnica de estimación de outliers propuesta por Cimbala\cite{Cimbala}. Los outliers detectados por la técnica serán nuestros candidatos a enlaces intercontinentales.
 A partir de este cálculo, tendremos en cuenta la detección de falsos positivos y negativos contrastando nuestra inferencia con herramientas de geolocalización de direcciones IP, (\textbf{ipinfo.io o ip2location.com}).
 
 Por último, propondremos hipótesis para los casos de comportamiento anómalo.
@@ -45,7 +45,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Oxford (ox.ac.uk - IP 129.67.242.154)}
 \end{center}\end{table}
 
-A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más fácilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -66,13 +66,13 @@ A continuación graficamos los \texttt{RTT} en función de los hops para analiza
 Con este gráfico podemos claramente observar los saltos negativos y en los que no hubo respuesta(estos
 últimos los notamos con RTT -1).\\
 
-Daremos nuestras hipótesis sobre que casos son los que identificamos como anomalias False RTT.\\
+Daremos nuestras hipótesis sobre que casos son los que identificamos como anomalías False RTT.\\
 
 \begin{itemize}
 \item El enlace entre los hops 4 y 5. Es asimétrico ya que la diferencia entre los RTTs de los hops mencionados y los anteriores es demasiado grande para ser causado por MPLS.
 \item El enlace entre los hops 9 y 10. Igual al caso anterior.
 \item El enlace entre los hops 12 y 13. Igual al caso anterior.
-\item El enlace entre los hops 14 y 17. Igual al caso anterios, con la particularidad de que los hops 15 y 16 son \textit{missing hops}.
+\item El enlace entre los hops 14 y 17. Igual al caso anterior, con la particularidad de que los hops 15 y 16 son \textit{missing hops}.
 \end{itemize}
 
 Los hops para los cuales no tuvimos respuesta fueron: 7, 8, 15, 16.\\
@@ -84,7 +84,7 @@ Probando con la universidad de Cambridge (también en Reino Unido) obtuvimos un 
 
 Como hipótesis alternativa podríamos pensar que esto ocurre por culpa del enlace intercontinental, ya sea por una cuestión de excesivo transito o por causas más puntuales sobre las configuraciones o protecciones de este.\\
 
-En el caso de los hops 15 y 16 ocurre algo parecido, puesto que el hop 14 parece pertencer al Reino Unido (sin ubicar region
+En el caso de los hops 15 y 16 ocurre algo parecido, puesto que el hop 14 parece pertenecer al Reino Unido (sin ubicar región
 ni ciudad) mientras que el hop 17 pertenece a Oxford. En este caso es más probable que se trate de una situación aislada
 ya que no existe un salto intercontinental, solamente regional.\\
 
@@ -98,12 +98,12 @@ Creemos que ésta ubicación es la más acertada ya que el salto intercontinenta
 Estados Unidos y Londres debería tener un $\Delta RTT$ bastante más grande. Sin embargo, el salto que separa a Holanda de
 Londres es demasiado grande, por lo tanto no terminamos de estar seguros.\\
 
-Además nuestra herramienta identifica como posible salto intercontinental al enlance entre las IPs 208.178.195.213 - 67.17.99.233 (hops 5 y 6).
+Además nuestra herramienta identifica como posible salto intercontinental al enlace entre las IPs 208.178.195.213 - 67.17.99.233 (hops 5 y 6).
 Sin embargo esto podría ser incorrecto ya que la aplicación de geolocalización nos dice que ambas IP pertenecen al dominio de Estados Unidos. Aunque, podemos concluir que el salto mostrado es efectivamente intercontinental ya que, como mencionamos antes, el hops 6 podría ser de Holanda en vez de Estados Unidos.
 
 \newpage
 
-\subsection{Universidad de Syndney}
+\subsection{Universidad de Sydney}
 
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
@@ -140,7 +140,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \caption{Ruta Universidad de Sydney (sydney.edu.au - IP 129.78.5.8)}
 \end{center}\end{table}
 
-A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más fácilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -167,7 +167,7 @@ A continuación enumeramos las anomalías encontradas:
 
 Con respecto a la detección de los enlaces intercontinentales, nuestra herramienta arroja como principal candidato al enlace entre los hops 8 y 9 ($\Delta RTT = 223.81$). El otro candidato es el enlace entre los hops 17-18 ($\Delta RTT = 101.59$).
 
-Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geolocalizacion, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, pero si es un enlace submarino. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
+Contrastando nuestra hipótesis contra las ubicaciones arrojadas por la aplicación de geolocalización, vemos que el enlace entre los hops 8 y 9 es un enlace entre Argentina y Estados Unidos, lo cual, geográficamente, no es un cambio de continente, pero si es un enlace submarino. Con respecto al enlace entre los hops 17-18 es un enlace entre Estados Unidos e Australia, lo que si representa un enlace intercontinental.
 
 \subsection{Universidad de Ghana}
 
@@ -189,7 +189,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{10} & 66.198.70.174   & 230.14            & -23.03                & Delaware, Estados Unidos       \\ \hline
     \texttt{11} & 80.231.76.121   & 253.52            & 23.38                 & Europa                         \\ \hline
     \texttt{12} & 195.219.195.238 & 325.31            & 71.79                 & Europa                         \\ \hline
-    \texttt{13} & 41.21.232.70    & 324.90            & -0.41                 & Sudafrica                      \\ \hline
+    \texttt{13} & 41.21.232.70    & 324.90            & -0.41                 & Sudáfrica                      \\ \hline
     \texttt{14} & 41.204.60.149   & 327.05            & 2.15                  & Ghana                          \\ \hline
     \texttt{15} & 41.204.60.150   & 327.73            & 0.68                  & Ghana                          \\ \hline
     \texttt{16} & 197.255.127.2   & 328.85            & 1.12                  & Ghana                          \\ \hline
@@ -199,7 +199,7 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 \end{center}
 \end{table}
 
-A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más fácilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -219,18 +219,18 @@ A continuación graficamos los \texttt{RTT} en función de los hops para analiza
 
 En primer lugar es interesante notar que los primeros dos hops muestran IPs privadas. Aunque no encontramos una explicación clara, podemos especular que estas corresponden a dos routers de un mismo proveedor de internet, quien les asignó IPs privadas para ahorrar IPs públicas.
 
-Pasamos a analizar las anomalias encontradas:
+Pasamos a analizar las anomalías encontradas:
 
 \begin{itemize}
   \item \textit{Loop/Cycle}: en los hops 5 y 6, que tienen la misma IP. Esto podría suceder por diversas razones:
       \begin{itemize}
         \item Debido a que el hop 5 fowardea paquetes con TTL 0.
-        \item Un ciclo que termina en la IP en cuestion, y que no deja ver cual es la IP verdadera del hop 5.
+        \item Un ciclo que termina en la IP en cuestión, y que no deja ver cual es la IP verdadera del hop 5.
       \end{itemize}
-  \item \textit{False RTT por rutas asimetricas}: en los hops 2, 4, 10 y 13 por tener incremento negativo en los saltos. El único salto de estos que podría llegar a ser debido a MPLS es el del hop 13 ($\Delta RTT = -0.41$), pero no fue posible confirmarlo.
+  \item \textit{False RTT por rutas asimétricas}: en los hops 2, 4, 10 y 13 por tener incremento negativo en los saltos. El único salto de estos que podría llegar a ser debido a MPLS es el del hop 13 ($\Delta RTT = -0.41$), pero no fue posible confirmarlo.
 \end{itemize}
 
-Mostramos ahora los enlaces candidatos a salto continental que arroja nuestra herramienta, contrastandolos con las ubicaciones arrojadas por la aplicación de geolocalización:
+Mostramos ahora los enlaces candidatos a salto continental que arroja nuestra herramienta, contrastándolos con las ubicaciones arrojadas por la aplicación de geolocalización:
 
 \begin{enumerate}
   \item Enlace entre los hops 4 y 5 ($\Delta RTT = 160.43$): Por la diferencias entre RTTs es claro que este enlace es un salto continental. Sin embargo, la aplicación de geolocalización nos dice que las IPs de los hops 3, 4, 5 y 6 corresponden a Italia, por lo que entonces estaríamos en un caso de falso positivo.
@@ -253,7 +253,7 @@ Mostramos ahora los enlaces candidatos a salto continental que arroja nuestra he
 
   \item Enlace entre los hops 11 y 12 ($\Delta RTT = 71.79$): Las diferencias entre RTTs nos inducen a pensar que este enlace es un salto continental, aunque la aplicación de geolocalización no nos provee información acerca de la posible ubicación de estas IPs.
 
-    Sin embargo, debido a que el hop 10 corresponde a Estados Unidos, y el 13 a Sudafrica concluimos que el enlace es efectivamente un salto continental, y que el hop 11 corresponde un router en Estados Unidos y el hop 12 a un router en Sudafrica.
+    Sin embargo, debido a que el hop 10 corresponde a Estados Unidos, y el 13 a Sudáfrica concluimos que el enlace es efectivamente un salto continental, y que el hop 11 corresponde un router en Estados Unidos y el hop 12 a un router en Sudáfrica.
   \item Enlace entre los hops 10 y 11 ($\Delta RTT = 23.38$): en base a lo concluido para el enlace entre los hops 11 y 12, este caso sería un falso positivo.
   \item Enlace entre los hops 9 y 10 ($\Delta RTT = -23.03$): este enlace parecería ser un falso positivo, por varias razones:
       \begin{itemize}
@@ -264,9 +264,9 @@ Mostramos ahora los enlaces candidatos a salto continental que arroja nuestra he
 \end{enumerate}
 
 
-\subsection{Universidad de Hong Kong de Ciencia y Tecnologia (HKUST)}
+\subsection{Universidad de Hong Kong de Ciencia y Tecnología (HKUST)}
 
-En este caso buscamos analizar los resultados de traceroute a una universidad de Hong Kong. Dada su ubicación en Asia, esperamos un gran aumento del RTT a medida que nos acercamos al destino, asi como una gran cantidad de Hops y uno o varios saltos continentales.
+En este caso buscamos analizar los resultados de traceroute a una universidad de Hong Kong. Dada su ubicación en Asia, esperamos un gran aumento del RTT a medida que nos acercamos al destino, así como una gran cantidad de Hops y uno o varios saltos continentales.
 
 Los resultados de este experimento pueden resumirse en el siguiente cuadro:
 
@@ -294,11 +294,11 @@ Los resultados de este experimento pueden resumirse en el siguiente cuadro:
     \texttt{18} & 202.14.80.153 & 443.62    & 2.97      & Hong Kong \\ \hline
     \texttt{19} & 143.89.14.2 & 448.84      & 5.21      & Hong Kong \\ \hline
     \end{tabular}
-    \caption{Ruta Universidad de Hong Kong de Ciencia y Tecnologia (www.ust.hk  - IP 143.89.14.2)}
+    \caption{Ruta Universidad de Hong Kong de Ciencia y Tecnología (www.ust.hk  - IP 143.89.14.2)}
 \end{center}
 \end{table}
 
-A continuación graficamos los \texttt{RTT} en función de los hops para analizar más facilmente las anomalías detectadas.
+A continuación graficamos los \texttt{RTT} en función de los hops para analizar más fácilmente las anomalías detectadas.
 
 \begin{figure}[H]
     \centering
@@ -329,14 +329,14 @@ Con respecto a la detección de los enlaces intercontinentales, nuestra herramie
 
 Por otro lado, la aplicación de geolocalización utilizada en este caso, ip2location.com, estipula varios saltos continentales, siendo los mismos:
 \begin{itemize}
-\item Argentina (Sudamerica) - Italia (Europa) entre hops 5 y 6.
-\item Italia (Europa) - Brasil (Sudamerica) entre hops 7 y 8.
-\item Brasil (Sudamerica) - Estados Unidos (Norteamerica) entre hops 8 y 9.
-\item Estados Unidos (Norteamerica) - Japón (Asia) entre hops 10 y 11.
+\item Argentina (Sudamérica) - Italia (Europa) entre hops 5 y 6.
+\item Italia (Europa) - Brasil (Sudamérica) entre hops 7 y 8.
+\item Brasil (Sudamérica) - Estados Unidos (Norteamérica) entre hops 8 y 9.
+\item Estados Unidos (Norteamérica) - Japón (Asia) entre hops 10 y 11.
 \end{itemize}
 
-Vemos una correspondencia entre los primeros dos candidatos que predice nuestra herramienta y el resultado de la aplicación de geolocalizacion. Es decir, tanto el enlace entre los hops 10 y 11 como el enlace entre los hops 8 y 9 correponden a enlaces intercontinentales, (Estados Unidos-Japón y Brasil - Estados Unidos respectivamente). Por otro lado, el enlace entre los hops 9 y 10 sería un falso positivo según la ubicación dada por la aplicación de geolocalización, ya que este correpondería a una conexión entre dos ciudades de Estados Unidos, en particular especulamos que el mismo debe ser un enlace que une la costa este con la costa oeste de este país.
+Vemos una correspondencia entre los primeros dos candidatos que predice nuestra herramienta y el resultado de la aplicación de geolocalización. Es decir, tanto el enlace entre los hops 10 y 11 como el enlace entre los hops 8 y 9 corresponden a enlaces intercontinentales, (Estados Unidos-Japón y Brasil - Estados Unidos respectivamente). Por otro lado, el enlace entre los hops 9 y 10 sería un falso positivo según la ubicación dada por la aplicación de geolocalización, ya que este correspondería a una conexión entre dos ciudades de Estados Unidos, en particular especulamos que el mismo debe ser un enlace que une la costa este con la costa oeste de este país.
 
-Queda por analizar la supuesta presencia de dos falsos negativos, los enlaces entre los hops 5 y 6 y los hops 7 y 8, que, según la aplicación de geolocalización, corresponden a enlaces entre Argentina e Italia e Italia y Brasil, respectivamente. Sin embargo los valores de \texttt{RTT} de los hops 6 y 7, (ambos hops correponden al mismo host), nos inducen a pensar que este host no esta ubicado en Italia. Hipotesis que se encuentra reforzada por el hecho que la dirección de IP corresponde al ISP ``AS6762 TELECOM ITALIA SPARKLE S.p.A.'', organización que opera tanto en Argentina como en Italia.
+Queda por analizar la supuesta presencia de dos falsos negativos, los enlaces entre los hops 5 y 6 y los hops 7 y 8, que, según la aplicación de geolocalización, corresponden a enlaces entre Argentina e Italia e Italia y Brasil, respectivamente. Sin embargo los valores de \texttt{RTT} de los hops 6 y 7, (ambos hops corresponden al mismo host), nos inducen a pensar que este host no esta ubicado en Italia. Hipótesis que se encuentra reforzada por el hecho que la dirección de IP corresponde al ISP ``AS6762 TELECOM ITALIA SPARKLE S.p.A.'', organización que opera tanto en Argentina como en Italia.
 
 Entonces para concluir, vemos que de los posibles candidatos el único enlace que es efectivamente intercontinental es el de los hops 10 y 11 (Estados Unidos - Japón).
